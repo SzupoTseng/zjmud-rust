@@ -21,8 +21,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -203,19 +201,13 @@ jobs:
       - name: 檢查每個 mud 的分級
         run: node scripts/check-badges.mjs
 
-      - name: 準備 docs/ 給 GitHub Pages（排除 libs/）
+      - name: 準備 docs/ 給 GitHub Pages（完整鏡射 site/，含各台映像）
         run: node scripts/prepare-pages.mjs
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      # 【WHY 這裡不部署】Settings → Pages 的 Source 是
+      # 「Deploy from a branch：main / docs」，部署由 GitHub 內建的
+      # "pages build and deployment" 在 docs/ 有新 commit 時自動觸發，
+      # 不是這個 workflow。這裡只負責跑完整條驗證管線並把 docs/ 準備好；
+      # 真正要上線，還是得把 docs/ 的變動 commit 並 push 到 main。
+      # （之前掛 actions/upload-pages-artifact + deploy-pages 那組 job，
+      # 因為 Source 不是 GitHub Actions，永遠會失敗——已移除。）

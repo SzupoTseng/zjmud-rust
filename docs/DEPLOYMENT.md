@@ -1,172 +1,59 @@
-﻿# GitHub Pages ?蔭甇仿?
+# GitHub Pages 部署說明
 
-## 璁膩
+## 架構
 
-?砍?獢歇?蔭??GitHub Pages ?函蔡嚗?誑銝暺?
+比照 [mudlibs.fluffos.info](https://mudlibs.fluffos.info/)：
+**docs/ 是完整站台**，driver 與每一台 mud 的映像（`libs/<slug>/mudlib.json` +
+`mudlib.data.gz`）都直接放在這裡，靠 GitHub Pages 的靜態 CDN 供應。
+瀏覽器點開 `play.html?mud=<slug>` 就地下載映像、就地在 WASM 裡開機，
+沒有另外的伺服器層、也不需要使用者在本機另外跑什麼。
 
-- **?垢隞?Ⅳ**嚗TML/CSS/JS嚗??芸??函蔡??GitHub Pages
-- **???**嚗ebAssembly/mudlib.data.gz嚗??砍??嚗?銝 GitHub
-- **?芸**嚗itHub Pages 閮芸?敹恍?WebAssembly ??靽??冽??
-
-## ?蔭甇仿?
-
-### 1. ??GitHub ?澈閮剔蔭銝剖???GitHub Pages
-
-?脣?澈??**Settings** > **Pages**
-
-| 閮剖???| ??|
-|---|---|
-| **Source** | Deploy from a branch |
-| **Branch** | `main` |
-| **Folder** | `/docs` |
-
-![GitHub Pages 閮剔蔭](https://docs.github.com/assets/cb-69/images/help/pages/publishing-source-dropdown.png)
-
-### 2. 蝣箄??函蔡???
-
-1. ?脣 **Actions** 璅惜
-2. ?曉 `Pages` workflow
-3. 蝣箄???啁? run ?? ??**Passed**
-
-### 3. 閮芸?蝺??
-
-?函蔡摰?敺?閮芸?嚗?
 ```
-https://szupotseng.github.io/zjmud-rust/
+docs/                    ← GitHub Pages 來源（Settings → Pages → main / docs）
+├── index.html           ← 目錄頁（214 台可搜尋/篩選的清單）
+├── play.html             ← 遊戲客戶端殼
+├── js/ css/
+├── _driver/              ← FluffOS WASM driver
+└── libs/
+    ├── index.json        ← 目錄頁用的清單 metadata
+    └── <slug>/
+        ├── mudlib.json    ← 該台的映像 manifest
+        └── mudlib.data.gz ← 該台的壓縮映像
 ```
 
-## ?函蔡瘚?
-
-瘥活 push ??`main` ???
-
-```mermaid
-graph LR
-    A["? Push to main"] -->|閫貊| B["? Build Site"]
-    B --> C["????葫閰?]
-    C -->|??| D["? 皞? docs/"]
-    D -->|? libs/| E["?? Deploy to Pages"]
-    E -->|??| F["??銝?"]
-    C -->|憭望?| G["??銝雿?]
-    style E fill:#42b983
-    style G fill:#ff6b6b
-```
-
-## ?砍?
-
-### ?寞? A嚗?唬撩?嚗?佗?
+## 產生／更新 docs/
 
 ```bash
-npm start
-```
-
-閮芸? `http://localhost:3000`嚗?????蝡航??砍 libs/??
-
-### ?寞? B嚗???隞?
-
-```bash
-# 撱箇蔭
 cd webclient
 npm ci
-npm run build
-
-# ?函汗?券???
-open ../docs/index.html
+node tools/build-site.mjs --out ../site --skip-boot-test   # 產生 site/
+cd ..
+node scripts/prepare-pages.mjs                              # site/ → docs/（整份鏡射）
+git add docs/
+git commit -m "chore: update GitHub Pages"
+git push origin main
 ```
 
-瘜冽?嚗?鈭汗?典? CORS ??⊥??湔閮芸??砍 libs/??
+推上 `main` 之後，GitHub 內建的「pages build and deployment」
+（Settings → Pages → Source = Deploy from a branch）會自動把 `docs/` 發佈上線。
 
-### ?寞? C嚗? GitHub Pages 瘛瑕?
+## 為什麼不是「本地 WASM + Pages 只當前端」
 
-GitHub Pages ???垢嚗?
-```
-https://szupotseng.github.io/zjmud-rust/
-```
+早期版本把 `libs/<slug>/` 排除在 `docs/` 之外，只留 `libs/index.json`，
+想法是映像留在使用者「本地」。但 `play.html` 目前的實作
+（`webclient/src/js/mudlibimage.js` 的 `fetchImage()`）本來就是用
+`fetch(base + '/mudlib.json')` 直接向目前網址抓資料，並沒有「本地」這個概念——
+排除的結果只是讓每一台都 404（GitHub 的 404 頁面是 HTML，被當 JSON 解析就炸掉）。
+改成整份鏡射之後這個路徑就直接對得上。
 
-?砍?? libs/嚗??蔭?垢??`libsPath` ?啣?霈嚗?
+## 檔案大小
 
-## ?辣蝯?
+- 個別檔案最大 ~56 MB（`jym/mudlib.data.gz`），遠低於 GitHub 100 MB 的硬性上限。
+- `docs/` 總大小 ~1.37 GB，超過 GitHub「建議」的 1 GB，但不是硬性阻擋門檻，
+  公開倉庫超過這個數字很常見。
 
-### GitHub Pages 銝???docs/嚗?
-```
-docs/
-??? index.html           ??擐?
-??? js/                  ??JavaScript 摰Ｘ蝡?
-??? css/                 ??璅??銵?
-??? _driver/             ??FluffOS WebAssembly driver
-??? libs/
-    ??? index.json       ???皜嚗???豢?嚗?
-```
-
-### ?砍靽????libs/嚗? **銝???GitHub**
-```
-libs/
-??? 91shujian/mudlib.data.gz
-??? aoxiangtianji/mudlib.data.gz
-??? ...
-??? 嚗?09 ???脫???
-```
-
-蝮質?嚗?
-- **docs/** 銝憭批?嚗200 MB
-- **libs/** ?砍憭批?嚗4.5 GB
-
-## ???
-
-### ??Pages ?函蔡憭望?
-
-1. 瑼Ｘ **Actions** 璅惜?隤斗隤?
-2. 撣貉???嚗?
-   - 皜祈岫憭望?嚗?????潔?嚗?
-   - ?梁????銝哨?撖Ⅳ瘣拇?嚗?
-   - ??瑼Ｘ憭望?
-
-### ??Pages ?憿舐內 404
-
-1. 蝣箄? Settings > Pages 銝?Branch 閮剔 `main`嚗older 閮剔 `/docs`
-2. 瑼Ｘ?臬撌脖???artifact嚗ctions > ???run > 銝??嚗?
-
-### ?? ?圈??脫???曉皜銝?
-
-1. 蝣箄? `libs/<slug>/mud.json` 摮
-2. 瑼Ｘ `prepare-pages.mjs` ?臬???? `docs/libs/index.json`
-3. 皜翰??Ctrl+Shift+R嚗?
-
-## ?芸??函蔡撌乩?瘚?
-
-| 甇仿? | ?券?| 憭望???|
-|---|---|---|
-| 1. 摰Ｘ蝡舀葫閰?| 蝣箔? UI ?∟炊 | ??銝蝵?|
-| 2. ???? | ?脫援瞍?蝣?| ??銝蝵?|
-| 3. ???交炎 | 撽? .gz ??mudlib.json | ??銝蝵?|
-| 4. 撱箇? | ?? site/ | ??銝蝵?|
-| 5. ?券?頝舫?霅?| ??WASM + ??DOM + ??HTTP | ?? 霅血?嚗璅?蝵莎? |
-| 6. 撱箄?皜祈岫 | ?賢?閬?嚗陛蝜?? ?瑕漲嚗?| ?? 霅血?嚗璅?蝵莎? |
-| 7. ?雯??霅?| ?汗?刻楝敺??詨 ???餃 ??撱箄?嚗?| ?? 霅血?嚗璅?蝵莎? |
-| 8. ?瑼Ｘ | ??Chromium 憭???| ?? 霅血?嚗璅?蝵莎? |
-| 9. ?桅???霅?| ??/蝭拚? | ???扳見?函蔡 |
-| 10. Driver log | ??瘥??憭?| ???扳見?函蔡嚗?閮?嚗?|
-| 11. ??瑼Ｘ | 撽? badge 甇?Ⅱ??| ???扳見?函蔡 |
-| 12. 皞? Pages | 銴ˊ??docs/嚗???libs/嚗?| ??銝蝵?|
-| 13. ?函蔡 | ?券 GitHub Pages | ??銝蝵?|
-
-## ?啣?霈
-
-瑽遣??銝剖?函??啣?霈嚗? `webclient/tools/build-site.mjs`嚗?
+## 本機開發／不透過 Pages 執行
 
 ```bash
-# ?芸遣蝵桃摰??莎?????嚗?
---only 91shujian,huoying
-
-# 頝喲???皜祈岫嚗I ?身??隞亦?????
---skip-boot-test
-
-# 靽? libs/ ?典???銝?鋆賡?site/嚗?
---link-libs
+npm start   # 啟動本機伺服器，同時供應前端與 libs/
 ```
-
-## ?賊????
-
-- [GitHub Pages ?辣](https://docs.github.com/en/pages)
-- [GitHub Actions 撌乩?瘚(../.github/workflows/pages.yml)
-- [蝡撱箇蔭?誘](../webclient/tools/build-site.mjs)
-- [?砍?隡箸??沘(../webclient/tools/serve-site.mjs)

@@ -1,0 +1,78 @@
+{
+  "name": "nt7",
+  "generatedBy": "webclient/tools/extract-zjmud-metadata.mjs",
+  "rules": [
+    {
+      "match": "^ver1\\.0[,:]",
+      "send": "zjclient",
+      "note": "challenge",
+      "req": false
+    },
+    {
+      "match": "请输入您的英文名字",
+      "send": "{id}",
+      "note": "name"
+    },
+    {
+      "match": "再[输輸]入一次|重复.{0,4}密码|确认.{0,4}密码",
+      "send": "{pw}",
+      "note": "pw-confirm",
+      "req": false
+    },
+    {
+      "match": "密码",
+      "send": "{pw}",
+      "note": "pw"
+    },
+    {
+      "match": "\\(y\\/n\\)|是否正确|确定吗",
+      "send": "y",
+      "note": "confirm",
+      "req": false
+    },
+    {
+      "match": "性别|男性|\\(m\\/f\\)",
+      "send": "{gender}",
+      "note": "gender",
+      "req": false
+    },
+    {
+      "match": "中文名字",
+      "send": "{name}",
+      "note": "cname",
+      "req": false
+    },
+    {
+      "match": "e-?mail|电子邮件",
+      "flags": "i",
+      "send": "a@b.c",
+      "note": "email",
+      "req": false
+    }
+  ],
+  "specs": {
+    "id": {
+      "min": 3,
+      "max": 12,
+      "charset": "^[a-z][a-z0-9]*$",
+      "hint": "3–12 字元，小寫字母開頭"
+    },
+    "pw": {
+      "min": 5,
+      "hint": "至少 5 個字元"
+    },
+    "cname": {
+      "min": 2,
+      "max": 4,
+      "chinese": true,
+      "hint": "2–4 個中文字"
+    },
+    "gender": {
+      "options": [
+        "m",
+        "f"
+      ],
+      "hint": "男 m／女 f"
+    }
+  }
+}
