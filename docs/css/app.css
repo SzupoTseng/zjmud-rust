@@ -1,0 +1,1113 @@
+/* 版面與元件樣式。所有顏色都來自 tokens.css 的變數。 */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/*
+ * ★ 這條必須放在最前面且帶 !important。
+ *
+ * [hidden] 的 display:none 來自瀏覽器 UA 樣式，優先級最低。
+ * 本檔案給 .connect-panel/.overlay/.modal-backdrop/.entity-list/.exit-cell
+ * 等元件都設了 display:grid|flex —— 作者樣式贏過 UA 樣式，
+ * 結果 element.hidden = true 完全沒有視覺效果：面板該關卻一直蓋在畫面上。
+ * 症狀是「按連線好像沒反應」，實際上連線每次都成功，只是面板不消失。
+ */
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-0);
+  color: var(--fg-0);
+  font-family: var(--font-ui);
+  font-size: var(--fs-base);
+  line-height: var(--leading);
+  overflow: hidden;
+}
+
+/* ══ 頂列 ══════════════════════════════════════════ */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex: 0 0 auto;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--accent);
+}
+
+.topbar-spacer { flex: 1; }
+
+.field-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+  white-space: nowrap;
+}
+
+.conn-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+}
+
+.conn-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--fg-2);
+  flex: 0 0 auto;
+}
+
+.conn-badge[data-state="OPEN"] .dot { background: var(--good); }
+.conn-badge[data-state="CONNECTING"] .dot,
+.conn-badge[data-state="RECONNECTING"] .dot { background: var(--warn); }
+.conn-badge[data-state="FAILED"] .dot { background: var(--bad); }
+
+/* ══ 表單元件 ══════════════════════════════════════ */
+
+.input, .select {
+  background: var(--bg-2);
+  color: var(--fg-0);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3);
+  font: inherit;
+  font-size: var(--fs-sm);
+  min-width: 0;
+}
+
+.input:focus, .select:focus {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 1px;
+}
+
+.range { accent-color: var(--accent); width: 90px; }
+
+.btn {
+  background: var(--bg-3);
+  color: var(--fg-0);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-4);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+
+.btn:hover { background: var(--line); }
+.btn:active { transform: scale(.96); }
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.btn-sm { padding: var(--sp-1) var(--sp-2); font-size: var(--fs-sm); }
+.btn-block { width: 100%; }
+
+.icon-btn {
+  background: transparent;
+  color: var(--fg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  width: 30px; height: 30px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.icon-btn:hover { color: var(--fg-0); background: var(--bg-3); }
+
+/* ══ 連線面板 ══════════════════════════════════════ */
+
+.connect-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--bg-0) 88%, transparent);
+  backdrop-filter: blur(3px);
+}
+
+.connect-card {
+  width: min(380px, 90vw);
+  padding: var(--sp-5);
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.connect-title {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-lg);
+  color: var(--accent);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+}
+
+.connect-hint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+
+/* ══ 三欄版面 ══════════════════════════════════════ */
+
+.layout {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 320px;
+  gap: 1px;
+  background: var(--line-soft);
+  min-height: 0;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: var(--bg-0);
+  gap: 1px;
+}
+
+.col-center { background: var(--bg-0); }
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-1);
+  padding: var(--sp-3);
+  gap: var(--sp-2);
+}
+
+.panel-grow { flex: 1 1 auto; }
+
+.panel-title {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--fg-2);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--sp-2);
+  flex: 0 0 auto;
+}
+
+/* ══ 捲動區 ════════════════════════════════════════ */
+
+.scroll-pane {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.scroll-sm { max-height: 30vh; }
+
+.scroll-pane::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-pane::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 99px;
+}
+
+/* ══ 訊息串 ════════════════════════════════════════ */
+
+.msg-list {
+  font-family: var(--font-mono);
+  padding: var(--sp-2) var(--sp-3);
+  user-select: text;
+}
+
+.msg {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 2px;
+}
+
+.lnk {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.lnk:hover { filter: brightness(1.25); }
+
+/* ══ 房間標題與描述 ════════════════════════════════ */
+
+.room-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line-soft);
+  flex: 0 0 auto;
+}
+
+.room-title {
+  background: transparent;
+  border: 0;
+  color: var(--fg-0);
+  font: inherit;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  padding: 0;
+  cursor: default;
+  white-space: nowrap;
+}
+.room-title.clickable { cursor: pointer; color: var(--accent); }
+
+.title-buttons {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  flex: 1 1 auto;
+  scrollbar-width: none;
+}
+.title-buttons::-webkit-scrollbar { display: none; }
+
+.chip {
+  background: var(--bg-3);
+  color: var(--fg-0);
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  padding: 2px var(--sp-3);
+  font: inherit;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.chip:hover { background: var(--line); }
+.chip:active { transform: scale(.96); }
+
+.room-desc {
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line-soft);
+  white-space: pre-wrap;
+  flex: 0 0 auto;
+  max-height: 22vh;
+  overflow-y: auto;
+}
+
+/* ══ 中欄本體（疊層的定位容器）════════════════════ */
+
+.center-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-1);
+}
+
+.combat-pane {
+  border-top: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+/* ══ 物件清單 ══════════════════════════════════════ */
+
+.entity-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  overflow-y: auto;
+  max-height: 34vh;
+}
+
+.entity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: stretch;
+  text-align: left;
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: var(--sp-2);
+  color: var(--fg-0);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.entity:hover { border-color: var(--accent-soft); }
+.entity:active { transform: scale(.98); }
+
+.entity-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.entity-bar, .stat-track {
+  position: relative;
+  display: block;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--bg-0);
+  overflow: hidden;
+}
+
+.bar-a, .bar-b {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  display: block;
+  border-radius: 99px;
+  transition: width var(--dur-mid) var(--ease);
+}
+.bar-b { background: color-mix(in srgb, var(--fg-1) 45%, transparent); }
+.bar-a { background: var(--hp); }
+
+/* ══ 方向盤 ════════════════════════════════════════ */
+
+.exit-host { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+.exit-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-1);
+  aspect-ratio: 1;
+  max-width: 240px;
+}
+
+.exit-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  color: var(--fg-0);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.exit-cell:hover { border-color: var(--accent); background: var(--bg-3); }
+.exit-cell:active { transform: scale(.94); }
+
+.exit-glyph { font-size: 1.2em; color: var(--accent); line-height: 1; }
+.exit-label {
+  font-size: .78em;
+  color: var(--fg-1);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-inline: 2px;
+}
+
+.exit-center {
+  background: var(--bg-3);
+  border-style: dashed;
+  color: var(--fg-1);
+  font-size: 1.3em;
+}
+
+.exit-extra { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+/* ══ 屬性條 ════════════════════════════════════════ */
+
+.stat-bars {
+  display: grid;
+  grid-template-columns: repeat(var(--stat-cols, 2), minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stat.clickable { cursor: pointer; }
+.stat.clickable:hover .stat-label { color: var(--accent); }
+
+.stat-track { height: 10px; }
+
+.stat-label {
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-text {
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+  padding: var(--sp-1) 0;
+}
+
+/* ══ 分頁 ══════════════════════════════════════════ */
+
+.tabs { display: flex; gap: var(--sp-1); flex: 0 0 auto; }
+
+.tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--fg-2);
+  font: inherit;
+  font-size: var(--fs-sm);
+  padding: var(--sp-1) var(--sp-3);
+  cursor: pointer;
+}
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ══ 指令輸入列 ════════════════════════════════════ */
+
+.composer {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-1);
+  border-top: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.cmd-input { flex: 1 1 auto; font-family: var(--font-mono); }
+
+/* ══ 快捷鈕列 ══════════════════════════════════════ */
+
+.quick-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-1);
+  border-top: 1px solid var(--line-soft);
+  flex: 0 0 auto;
+}
+
+.quick-row-bottom { border-top: 1px solid var(--line); }
+
+.quick {
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  color: var(--fg-0);
+  font: inherit;
+  font-size: var(--fs-sm);
+  padding: var(--sp-2) var(--sp-1);
+  cursor: pointer;
+  white-space: pre-line;
+  line-height: 1.25;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.quick:hover { border-color: var(--accent-soft); }
+.quick:active { transform: scale(.96); }
+.quick-empty { color: var(--fg-2); border-style: dashed; }
+
+/* 底部工作列：桌面版完全透明（display:contents = 子元素直接參與原版面）。 */
+.dock { display: contents; }
+
+/* ══ 疊層 ══════════════════════════════════════════ */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: var(--bg-1);
+  display: flex;
+  flex-direction: column;
+  animation: sheet-in var(--dur-mid) var(--ease);
+}
+
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.sheet { padding: var(--sp-4); gap: var(--sp-3); }
+
+.sheet-close { position: absolute; top: var(--sp-2); right: var(--sp-2); z-index: 2; }
+
+/* 互動抽屜的暗幕：桌面版不存在（抽屜只蓋中欄，不需要）；手機版見斷點內。 */
+.sheet-backdrop { display: none; }
+
+.sheet-detail {
+  white-space: pre-wrap;
+  color: var(--fg-0);
+  font-family: var(--font-mono);
+  max-height: 40%;
+  overflow-y: auto;
+  padding-right: 36px;
+}
+
+.sheet-num { display: flex; gap: var(--sp-2); align-items: center; }
+.num-input {
+  background: var(--bg-2);
+  color: var(--fg-0);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-2);
+  font: inherit;
+  width: 110px;
+}
+
+.action-cols {
+  display: flex;
+  gap: var(--sp-3);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.action-col {
+  display: grid;
+  grid-template-columns: repeat(var(--action-cols, 1), minmax(0, 1fr));
+  gap: var(--sp-2);
+  align-content: start;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--fg-0);
+  font: inherit;
+  font-size: var(--fs-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.action:hover { border-color: var(--accent-soft); }
+.action:active { transform: scale(.98); }
+.action-sub { color: var(--fg-2); font-size: .85em; }
+
+.overlay-plain { padding: var(--sp-4); overflow: auto; }
+
+.overlay-mono, .overlay-text {
+  font-family: var(--font-mono);
+  white-space: pre;
+  margin: 0;
+  color: var(--fg-0);
+  overflow: auto;
+}
+.overlay-text { white-space: pre-wrap; }
+
+/* ══ 模態 ══════════════════════════════════════════ */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--bg-0) 75%, transparent);
+  backdrop-filter: blur(2px);
+  padding: var(--sp-4);
+}
+
+.dialog-box {
+  width: min(520px, 92vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  padding: var(--sp-5);
+  animation: sheet-in var(--dur-mid) var(--ease);
+}
+
+.dialog-body { overflow-y: auto; min-height: 0; }
+.dialog-line { white-space: pre-wrap; margin-bottom: var(--sp-2); }
+.dialog-exp { color: var(--good); }
+.dialog-money { color: var(--accent); }
+
+.dialog-items { display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: center; }
+
+.dialog-item {
+  width: 56px; height: 56px;
+  border-radius: var(--radius);
+  border: 2px solid var(--line);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  font-size: 11px;
+  cursor: pointer;
+  overflow: hidden;
+}
+/* 品階邊框（協議 §5） */
+.dialog-item.tier-white  { border-color: #dddddd; }
+.dialog-item.tier-green  { border-color: #4caf50; }
+.dialog-item.tier-blue   { border-color: #3f7fd0; }
+.dialog-item.tier-purple { border-color: #9b59d0; }
+.dialog-item.tier-gold   { border-color: #d9a441; }
+.dialog-item.tier-red    { border-color: #d04a4a; }
+.dialog-item.tier-grey   { border-color: #777777; }
+
+.dialog-num { display: flex; justify-content: center; }
+.dialog-actions { display: flex; gap: var(--sp-3); justify-content: center; }
+
+.pop-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--pop-cols, 1), minmax(140px, 1fr));
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: sheet-in var(--dur-mid) var(--ease);
+}
+
+.pop-item {
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  color: var(--fg-0);
+  font: inherit;
+  padding: var(--sp-3);
+  cursor: pointer;
+}
+.pop-item:hover { border-color: var(--accent); }
+
+/* ══ 橫幅與飄字 ════════════════════════════════════ */
+
+.toast-host {
+  position: fixed;
+  top: var(--sp-4);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-2);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--sp-2) var(--sp-4);
+  font-size: var(--fs-sm);
+  white-space: pre-wrap;
+  animation: toast-life 5s var(--ease) forwards;
+}
+
+@keyframes toast-life {
+  0%   { opacity: 0; transform: translateY(-8px); }
+  6%   { opacity: 1; transform: none; }
+  92%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.float-host {
+  /* 飄浮字是純展示層，絕不可攔截點擊。
+     【WHY】無頭截圖實證：一段飄浮公告疊在狀態面板上，正是使用者
+     「根本點不到」的攔截層之一——視覺淡出前它一直吃著整塊區域的 tap。 */
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.float-text {
+  position: absolute;
+  left: 50%;
+  bottom: 22%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-size: calc(var(--fs-lg) * 1.4);
+  color: var(--bad);
+  text-shadow: 0 2px 6px rgb(0 0 0 / .6);
+  white-space: nowrap;
+  animation: float-up 1.9s var(--ease) forwards;
+}
+
+@keyframes float-up {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(.4); }
+  8%   { opacity: 1; transform: translate(-50%, -12px) scale(1.15); }
+  20%  { transform: translate(-50%, -24px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -160px) scale(1); }
+}
+
+/* ══ 響應式：手機直向 ══════════════════════════════ */
+
+@media (max-width: 900px) {
+  /* ── App-shell：整頁固定高，各區內部捲動 ─────────────────
+     【WHY】上一版用 position:fixed 釘工作列＋padding 讓位，實測（無頭截圖
+     390×900）疊成一團：狀態蓋住描述、訊息文字浮在按鈕上、「根本點不到」。
+     fixed 元素跟文流互不知情，高度算錯就互蓋。改成結構性不可重疊：
+     .layout 是固定高的 flex 直欄，四段各佔一層——
+       [現場/出口 條] [房間＋訊息（內部捲動）] [輸入列＋快捷選單] [狀態/聊天 條]
+     沒有 fixed、沒有讓位 padding，每一層都是普通 flex 子元素。 */
+  .layout {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* ── 上排（現場／出口）：壓扁 ──────────────────────
+     【WHY】使用者截圖：這兩塊在手機上佔了近半個螢幕，而內容常常只有
+     一個 NPC 加四個出口——空白比內容多，把訊息流（真正在玩的東西）
+     擠到看不見。高度改成內容自適應＋上限，超出就在面板內捲動。 */
+  .col-left {
+    flex: 0 0 auto;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: var(--sp-2);
+    padding: var(--sp-2);
+    max-height: 16svh;
+  }
+
+  .col-left .panel {
+    flex: 0 0 auto;
+    padding: var(--sp-2);
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  .entity-list { flex-direction: row; max-height: none; }
+  .entity { min-width: 96px; padding: var(--sp-2); }
+  .exit-pad { max-width: 150px; gap: 3px; }
+  .exit-cell { min-height: 40px; font-size: var(--fs-sm); }
+
+  .col-center { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+
+  /* ── 中欄內的讓位順序 ──────────────────────────────
+     【WHY】flex 子元素預設 min-height:auto＝「不肯縮到內容以下」。
+     描述一長（或字級一大）就把後面的工作列擠出中欄、被 overflow 裁掉——
+     使用者截圖：快捷列只剩一條細邊。宣告誰能縮、誰絕不能縮：
+       絕不縮：房間標題、工作列（操作面）
+       可縮到 0：描述（自己內捲）、訊息區（自己內捲）             */
+  .room-header { flex: 0 0 auto; position: relative; z-index: 1; background: var(--bg-1); }
+  .room-desc { flex: 0 1 auto; min-height: 0; max-height: 12vh; overflow-y: auto; }
+  .dock { flex-shrink: 0; }
+  .center-body { flex: 1 1 auto; min-height: 0; }
+
+  /* 狀態/聊天：可縮。
+     【WHY】自動檢查在 360×600（最小的實機尺寸）抓到它與工作列重疊 6041px²：
+     `flex:0 0 auto` 表示「絕不縮」，螢幕不夠高時它就把工作列擠出去。
+     操作面（工作列）優先於資訊面（狀態）——所以可縮的是這一塊。 */
+  .col-right {
+    flex: 0 1 auto;
+    min-height: 0;
+    order: 3;
+    max-height: 26svh;
+    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .col-right .panel-grow { max-height: none; }
+
+  /* ── 狀態列：兩欄緊湊網格 ─────────────────────────
+     【WHY】截圖裡「气血：100 1…」被截到看不出數值。伺服器指定的欄數
+     （--stat-cols，常是 4）是給桌面寬度的；手機一律兩欄，
+     字級縮一階，數字就放得下、不再靠省略號。 */
+  .col-right .stat-bars { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .stat-label { font-size: 11px; }
+  .stat-track { height: 8px; }
+  .col-right .panel { padding: var(--sp-2); }
+  .panel-title { font-size: 12px; margin-bottom: var(--sp-1); }
+
+  .quick-row { grid-template-columns: repeat(5, 1fr); }
+  .room-desc { max-height: 16vh; }
+  .action-cols { flex-direction: column; }
+
+  /* 底部工作列：中欄的最後一個 flex 子元素（不是 fixed）。
+     中欄固定高、訊息區內部捲動，所以它永遠貼在訊息區下方、永遠可點。 */
+  .dock {
+    display: block;
+    flex: 0 0 auto;
+    background: var(--bg-1);
+    border-top: 1px solid var(--line);
+    padding: var(--sp-2);
+    padding-bottom: max(var(--sp-2), env(safe-area-inset-bottom));
+  }
+  /* 快捷列：一列橫向捲動（手機標準型）。
+     【WHY】截圖實證：2×5 網格加起來比 dock 分到的高度高，最後一排被裁一半、
+     「游戏指南」剩半顆。改成每列單行、超出往右滑，高度就固定住了。 */
+  .dock .quick-row {
+    margin-top: var(--sp-2);
+    display: flex;
+    overflow-x: auto;
+    gap: var(--sp-2);
+    scrollbar-width: none;
+  }
+  .dock .quick-row::-webkit-scrollbar { display: none; }
+  .dock .quick {
+    flex: 0 0 auto;
+    min-width: 64px;
+    min-height: 40px;
+    padding: 4px 8px;
+    font-size: 11px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  /* ── 互動視窗：蓋在訊息區上，**不蓋工作列** ────────────────
+     【WHY】自動版面檢查（Playwright 實測四種視口）指出：抽屜的暗幕
+     `sheet-backdrop` 蓋住送出鈕、輸入列與全部快捷鈕——這就是使用者說的
+     「根本點不到」。而伺服器登入時會主動開一個公告抽屜，於是一進遊戲
+     整個操作面就被鎖住。
+     【推理】這個抽屜是**資訊面板**（物品說明、NPC 動作），不是需要獨占
+     輸入的模態框。MUD 的使用習慣是「一邊看說明一邊打指令」，所以它應該
+     只蓋訊息區、把工作列讓出來——也就回到桌面版本來的行為
+     （.overlay 是 absolute，蓋在中欄內容上）。暗幕整個拿掉。 */
+  .sheet-backdrop:not([hidden]) { display: none; }
+  .overlay.sheet {
+    position: absolute;      /* 相對 .center-body：只蓋訊息區 */
+    inset: 0;
+    max-height: none;
+    z-index: 20;
+    border-top: 1px solid var(--line);
+    border-radius: 12px 12px 0 0;
+    overflow-y: auto;
+  }
+  .overlay.sheet .sheet-detail {
+    max-height: 40%;
+    font-size: var(--fs-base, 15px);
+  }
+  .overlay.sheet .sheet-close {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    top: var(--sp-2);
+    right: var(--sp-2);
+  }
+  .overlay.sheet .action {
+    padding: var(--sp-3);
+    font-size: var(--fs-base, 15px);
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar { flex-wrap: wrap; gap: var(--sp-2); }
+  .field-inline { font-size: 11px; }
+  .range { width: 64px; }
+}
+
+/* ══ 無障礙 ════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .toast { animation: none; opacity: 1; }
+  .float-text { animation: none; opacity: 1; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ══ 連線面板的錯誤／環境診斷 ══════════════════════ */
+
+.connect-error {
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3);
+  background: color-mix(in srgb, var(--bad) 18%, transparent);
+  border: 1px solid var(--bad);
+  border-radius: var(--radius);
+  color: var(--fg-0);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.connect-env {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--fg-2);
+}
+.connect-env.bad { color: var(--bad); }
+
+.field-check {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+  cursor: pointer;
+}
+.field-check input { accent-color: var(--accent); }
+
+/* ══ 登入 / 建角 ════════════════════════════════════ */
+
+.login-box { width: min(400px, 92vw); }
+
+.login-box .field { gap: var(--sp-1); }
+
+.radio-row { display: flex; gap: var(--sp-4); }
+.radio-row .field-check { margin: 0; }
+
+/* ══ 擴充方言面板 ══════════════════════════════════ */
+/* 新協議 mudlib（大梦江湖等）的 60+ 個 opcode 共用這一組容器。
+   每個功能是一個分頁，內容依 dialects.js 的 kind 決定怎麼畫。 */
+
+.ext-panels {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  width: min(520px, 92vw);
+  max-height: 70vh;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.ext-close { position: absolute; top: var(--sp-2); right: var(--sp-2); z-index: 2; }
+
+.ext-tabs {
+  display: flex;
+  gap: var(--sp-1);
+  overflow-x: auto;
+  padding: var(--sp-2) 44px var(--sp-2) var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+  scrollbar-width: none;
+}
+.ext-tabs::-webkit-scrollbar { display: none; }
+
+.ext-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ext-title { font-size: var(--fs-lg); font-weight: 600; color: var(--accent); }
+.ext-text  { white-space: pre-wrap; color: var(--fg-0); font-family: var(--font-mono); }
+
+.ext-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ext-cols, 3), minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.ext-entities { display: flex; flex-direction: column; gap: var(--sp-1); }
+.ext-side-label {
+  font-size: var(--fs-sm); color: var(--fg-2);
+  border-left: 3px solid var(--accent); padding-left: var(--sp-2);
+}
+
+@media (max-width: 900px) {
+  .ext-panels { right: 0; left: 0; bottom: 0; width: auto; max-height: 60vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+}
+
+.who-label {
+  font-size: var(--fs-sm);
+  color: var(--fg-1);
+  white-space: nowrap;
+}
+
+/* toast 合併計數：同一則訊息重複出現時顯示 ×N，而不是疊成一整排 */
+.toast-count {
+  margin-left: var(--sp-1);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── WASM 模式：mud 選單 ─────────────────────────────
+   連線面板在 WASM 站台上不是問位址，而是列出可玩的 mudlib（見 main.js
+   bindMudPicker）。清單可能有十幾筆，所以要能捲動而不是把面板撐爆。 */
+.mud-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 46vh;
+  overflow-y: auto;
+  margin: 8px 0 12px;
+}
+.mud-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.mud-item:hover { border-color: var(--accent); }
+.mud-item.selected { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.mud-item.disabled { opacity: .45; cursor: not-allowed; }
+.mud-item-title { font-weight: 600; }
+.mud-item-meta { font-size: 12px; opacity: .7; }
+.mud-item-note { font-size: 12px; color: var(--warn, #e0af68); }
+
+.mud-progress { margin: 4px 0 12px; }
+.mud-progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+.mud-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease-out;
+}
+
+/* 逃生連結長得像按鈕：它在 .dialog-actions 裡與真按鈕並排，
+   不統一樣式的話會變成一個突兀的藍色連結。 */
+a.btn { text-decoration: none; display: inline-flex; align-items: center; }

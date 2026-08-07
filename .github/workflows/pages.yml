@@ -203,9 +203,12 @@ jobs:
       - name: 檢查每個 mud 的分級
         run: node scripts/check-badges.mjs
 
+      - name: 準備 docs/ 給 GitHub Pages（排除 libs/）
+        run: node scripts/prepare-pages.mjs
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: docs
 
   deploy:
     needs: build
