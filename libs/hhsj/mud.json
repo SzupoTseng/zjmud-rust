@@ -1,0 +1,32 @@
+{
+  "title": "洪荒世界",
+  "subtitle": "源自 2026-07-29 批量归档 `mudlib.rar` 中的 `洪荒世界(自连数据库)`。与 `nitan170911`（仙剑奇侠传）、`nitan6`（笑傲江湖）同源的 NT/nitan/Lonely 引擎家族成员，这次以《封神演义》/盘古开天为背景重新设计。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "dialect": "dmjh",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "004",
+        "005",
+        "006"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 5 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "number": "014-1",
+  "upstreamName": "洪荒世界",
+  "note": ""
+}

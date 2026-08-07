@@ -1,0 +1,52 @@
+{
+  "title": "夕阳再现·风云再起Ⅱ",
+  "subtitle": "站点子名\"风云再起Ⅱ\"（域名 www.zhaoshu.net）。与本项目中的 `xiyangzaixian_fengkuang`（疯狂江湖）同属\"夕阳再现\"这一支武侠 MUD 引擎 家族——两者共享部分底层文件，但登录、安全、世界内容各自独立开发，是 两个不同站点在同一基础引擎上分别发展出的游戏。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "032-1",
+  "upstreamName": "夕阳再现·风云再起Ⅱ",
+  "note": ""
+}

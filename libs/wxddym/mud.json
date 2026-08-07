@@ -1,0 +1,33 @@
+{
+  "title": "武学大道",
+  "number": "141",
+  "subtitle": "一款以「世外桃源」为起点的武侠 MUD，采用非标准的移动端客户端协议 （非纯文字 telnet 提示语）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "dialect": "dmjh",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "note": ""
+}

@@ -1,0 +1,47 @@
+{
+  "title": "海洋（基础版）",
+  "number": "146",
+  "subtitle": "以\"金庸小说背景\"为世界观的武侠 MUD（请勿使用小说中人名），社区名\"情义盟\"。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

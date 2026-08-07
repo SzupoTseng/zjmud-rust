@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ZJMUD</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ═══ 頂列 ═══ -->
+<header class="topbar">
+  <span class="brand">ZJMUD</span>
+  <div id="conn-badge" class="conn-badge" data-state="IDLE"></div>
+  <div class="topbar-spacer"></div>
+  <label class="field-inline">
+    主題
+    <select id="theme-select" class="select">
+      <option value="night">竹簡夜</option>
+      <option value="day">宣紙日</option>
+      <option value="mud">終端</option>
+    </select>
+  </label>
+  <label class="field-inline">
+    字級
+    <input id="font-range" class="range" type="range" min="0.8" max="1.5" step="0.05" value="1">
+  </label>
+  <span id="who-label" class="who-label" hidden></span>
+  <button id="logout-btn" class="btn btn-sm" type="button" hidden>登出</button>
+  <button id="disconnect-btn" class="btn btn-sm" type="button">斷線</button>
+</header>
+
+<!-- ═══ 連線面板 ═══ -->
+<div id="connect-panel" class="connect-panel">
+  <div class="connect-card">
+    <h1 class="connect-title">連線到 MUD 伺服器</h1>
+
+    <!-- ═══ WASM 模式：選一個 mudlib ═══
+         這一區只有在站台帶了 libs/index.json 時才會出現（見 main.js bindConnectForm）。
+         WASM 版沒有遠端伺服器可連，第一個畫面問的不該是「位址／埠號」，而是「玩哪一個」。 -->
+    <div id="mud-picker" hidden>
+      <p class="connect-hint" id="mud-picker-hint">選一個要在這個分頁裡跑起來的 mudlib：</p>
+      <div id="mud-list" class="mud-list"></div>
+      <div id="mud-progress" class="mud-progress" hidden>
+        <div class="mud-progress-bar"><div id="mud-progress-fill" class="mud-progress-fill"></div></div>
+        <p id="mud-progress-text" class="connect-env"></p>
+      </div>
+    </div>
+
+    <div id="direct-fields">
+      <label class="field">位址<input id="host-input" class="input" type="text" placeholder="127.0.0.1"></label>
+      <label class="field">埠號<input id="port-input" class="input" type="number" placeholder="5001"></label>
+      <label class="field-check">
+        <input id="autoconnect-check" type="checkbox"> 啟動時自動連線
+      </label>
+    </div>
+    <button id="connect-btn" class="btn btn-primary btn-block" type="button">連線</button>
+    <!-- 錯誤一定要看得見。先前這裡沒有任何錯誤顯示，連線失敗時畫面毫無反應，無從判斷原因。 -->
+    <p id="connect-error" class="connect-error" hidden></p>
+    <p id="connect-env" class="connect-env"></p>
+    <p class="connect-hint">
+      連上之後，登入與角色選擇都在遊戲畫面內以文字進行。
+    </p>
+  </div>
+</div>
+
+<!-- ═══ 主畫面 ═══ -->
+<main class="layout">
+
+  <!-- ── 左欄：現場 ── -->
+  <aside class="col col-left">
+    <section class="panel">
+      <h2 class="panel-title">現場</h2>
+      <div id="entity-list" class="entity-list" hidden></div>
+    </section>
+
+    <section class="panel panel-grow">
+      <h2 class="panel-title">出口</h2>
+      <div id="exit-pad-host" class="exit-host"></div>
+    </section>
+  </aside>
+
+  <!-- ── 中欄：房間與訊息 ── -->
+  <section class="col col-center">
+    <div id="room-header" class="room-header"></div>
+    <div id="room-desc" class="room-desc"></div>
+
+    <div class="center-body">
+      <div class="scroll-pane">
+        <div id="msg-main" class="msg-list"></div>
+      </div>
+
+      <!-- 戰鬥面板 -->
+      <section id="combat-pane" class="panel combat-pane" hidden>
+        <h2 class="panel-title">戰鬥</h2>
+        <div class="scroll-pane scroll-sm">
+          <div id="msg-combat" class="msg-list"></div>
+        </div>
+      </section>
+
+      <!-- 疊層都蓋在中欄上 -->
+      <div id="overlay-interact" class="overlay sheet" hidden></div>
+      <div id="overlay-map" class="overlay overlay-plain" hidden></div>
+      <div id="overlay-paged" class="overlay overlay-plain" hidden></div>
+      <div id="float-host" class="float-host"></div>
+    </div>
+
+    <!-- 底部工作列：輸入列＋快捷選單。桌面版 display:contents（版面不變）；
+         手機版固定在螢幕底部——選單永遠在，不再被房間描述推走。 -->
+    <div id="bottom-dock" class="dock">
+      <div class="composer">
+        <input id="cmd-input" class="input cmd-input" type="text"
+               placeholder="輸入指令…（↑ ↓ 翻歷史，Esc 關閉疊層）" autocomplete="off" spellcheck="false">
+        <button id="cmd-send" class="btn btn-primary" type="button">送出</button>
+      </div>
+      <div id="quick-main" class="quick-row"></div>
+      <div id="quick-bottom" class="quick-row quick-row-bottom"></div>
+    </div>
+  </section>
+
+  <!-- ── 右欄：狀態與聊天 ── -->
+  <aside class="col col-right">
+    <section class="panel">
+      <h2 class="panel-title">狀態</h2>
+      <div id="stat-bars" class="stat-bars"></div>
+    </section>
+
+    <section class="panel panel-grow">
+      <div class="tabs">
+        <button class="tab active" type="button" data-chat-tab="chat">聊天</button>
+        <button class="tab" type="button" data-chat-tab="sys">系統</button>
+      </div>
+      <div class="scroll-pane">
+        <div id="msg-chat" class="msg-list"></div>
+      </div>
+      <div class="scroll-pane" hidden>
+        <div id="msg-sys" class="msg-list"></div>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<!-- ═══ 擴充方言面板（新協議 mudlib 用）═══ -->
+<div id="ext-panels" class="ext-panels" hidden>
+  <div class="ext-tabs" id="ext-tabs"></div>
+  <div class="ext-body" id="ext-body"></div>
+  <button id="ext-close" class="icon-btn ext-close" type="button" title="關閉">✕</button>
+</div>
+
+<!-- ═══ 登入流程 ═══ -->
+<div id="login-modal" class="modal-backdrop" hidden>
+  <div class="dialog-box login-box">
+    <h2 class="connect-title" id="login-title">登入</h2>
+    <p class="connect-hint">
+      帳號不存在會自動註冊。ID 需 4–20 字元、英文字母開頭，只能用小寫字母／數字／底線。
+    </p>
+    <label class="field">帳號<input id="login-id" class="input" type="text" autocomplete="username" placeholder="例：wanderer01"></label>
+    <label class="field">密碼<input id="login-pw" class="input" type="password" autocomplete="current-password"></label>
+    <label class="field">Email（選填）<input id="login-email" class="input" type="text" placeholder="a@b.com"></label>
+    <!-- telnet 台（非 zjmud）才顯示：client 先收「所有可能被問的欄位」的超集，
+         伺服器實際只問其中幾個，登入接應器從這裡取答。沒填的用安全預設。 -->
+    <div id="telnet-fields" hidden>
+      <p id="login-req" class="connect-hint"></p>
+      <label class="field">角色中文名（選填）<input id="login-cname" class="input" type="text" placeholder="例：無名（留空用預設）"></label>
+      <label class="field">性別
+        <select id="login-gender" class="input">
+          <option value="m">男</option>
+          <option value="f">女</option>
+        </select>
+      </label>
+    </div>
+    <label class="field-check"><input id="login-remember" type="checkbox"> 記住帳號密碼並自動登入</label>
+    <p id="login-error" class="connect-error" hidden></p>
+    <div class="dialog-actions">
+      <button id="login-submit" class="btn btn-primary" type="button">登 入</button>
+      <button id="login-manual" class="btn" type="button">手動輸入</button>
+      <!-- ★ 逃生出口：不論登入卡在哪一步，都能離開這一台。
+           【WHY】使用者回報：登入失敗後**重新整理與 Ctrl+F5 都沒用**，
+           永遠停在同一台的登入視窗——因為網址帶著 ?mud=，一進頁就自動開它。
+           沒有這個按鈕，唯一的辦法是自己動手改網址。 -->
+      <a id="login-back" class="btn" href="./index.html">← 回 MUD 清單</a>
+    </div>
+  </div>
+</div>
+
+<div id="char-modal" class="modal-backdrop" hidden>
+  <div class="dialog-box login-box">
+    <h2 class="connect-title">建立角色</h2>
+    <p class="connect-hint">這個帳號還沒有角色。名字需為 <b>2–4 個中文字</b>。</p>
+    <div class="field">
+      <span>性別</span>
+      <div class="radio-row">
+        <label class="field-check"><input type="radio" name="char-sex" value="男" checked> 男</label>
+        <label class="field-check"><input type="radio" name="char-sex" value="女"> 女</label>
+      </div>
+    </div>
+    <label class="field">角色名<input id="char-name" class="input" type="text" maxlength="4" placeholder="例：無名"></label>
+    <p id="char-error" class="connect-error" hidden></p>
+    <div class="dialog-actions">
+      <button id="char-submit" class="btn btn-primary" type="button">建 立</button>
+      <a id="char-back" class="btn" href="./index.html">← 回 MUD 清單</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 全域疊層 ═══ -->
+<div id="overlay-dialog" class="modal-backdrop" hidden></div>
+<div id="overlay-popmenu" class="modal-backdrop" hidden></div>
+<div id="toast-host" class="toast-host"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

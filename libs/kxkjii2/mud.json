@@ -1,0 +1,47 @@
+{
+  "title": "狂想空间II (kxkjii2)",
+  "number": "089",
+  "subtitle": "ES II/Annihilator 系架构衍生的 mudlib，和 jyqxc 系列不是同一血统 （存档用驱动原生的明文格式，不是那一系的旧式二进制格式）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

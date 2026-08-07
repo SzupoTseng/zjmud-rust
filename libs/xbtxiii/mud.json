@@ -1,0 +1,50 @@
+{
+  "title": "雄霸天下III",
+  "number": "154",
+  "subtitle": "真正的 1997-2001 年代 mudlib（按其自带 readme 所述），一个\"风云\"衍生 分支。原始归档以 4 个分卷 zip（XB.ZIP.1-4）形式提供，解开后内层是 12 个按目录拆分的 tar.gz，而非扁平目录树。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "雄霸天下III",
+  "note": ""
+}

@@ -1,0 +1,51 @@
+{
+  "title": "书剑2002",
+  "subtitle": "源文件包名为\"金庸文字版\"。经比对确认，这与本项目中的\"bxsj\"（书剑 天下）、\"bxsj1\" 是**同一套代码库**的不同历史快照，属于同一支血脉的 武侠 MUD。取名自金庸小说《书剑恩仇录》。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/bak/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 8 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "004-2",
+  "upstreamName": "金庸文字版",
+  "note": ""
+}

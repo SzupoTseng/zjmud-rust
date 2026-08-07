@@ -1,0 +1,52 @@
+{
+  "title": "夕阳再现 (xyzx)",
+  "number": "127",
+  "subtitle": "《夕阳再现》之「风云再起Ⅱ」，是 `xysylmhb`（夕阳三-炎龙美化版）那 一整个家族的原始基础版本，`logind.lpc`/`master.lpc`/注册流程都非常 相似。这份档案在**标准端口不需要** Tomud 客户端握手——`master.lpc` 的 `connect(port)` 只有连到专门的 TOMUD_PORT 才会设一个临时标记， `logind.lpc` 只有那个标记被设置时才会走 `2060` 版本检查，",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "夕阳再现",
+  "note": ""
+}

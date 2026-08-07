@@ -1,0 +1,48 @@
+{
+  "title": "最终幻境 (The Final Frontier)",
+  "number": "061",
+  "subtitle": "「最终幻境」（The Final Frontier，简称 FF）是一个改写自「东方故事II」 (ES2) 函数库的太空科幻题材 MUD，由 Spock 创立——是本项目 ES II/东方 故事大家族里罕见的科幻换皮版本，而非武侠题材。存档原为繁体中文（BIG5） 内容，已转换为 UTF-8。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 8 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

@@ -1,0 +1,52 @@
+{
+  "title": "终极地狱-指间MUD版",
+  "subtitle": "游戏登录后自报家门为\"地狱无门\"（\"No Escape From Hell\"，压缩包标题为 \"终极地狱-指间mud版服务端\"）。属于 ES II → XKX → \"地狱\"（hell）分支 引擎家族，与 `zhongjidiyu_airuoyoulan`（爱若幽兰）是同一套引擎核心的 姊妹版本，本作在此基础上额外接入了一层\"指间MUD\"手机客户端专用协议。 与另一个名字里也带\"终极地狱\"的 `zhongjidiyu` 压缩包不是同一款游戏",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "053-1",
+  "upstreamName": "终极地狱-指间MUD版",
+  "note": ""
+}

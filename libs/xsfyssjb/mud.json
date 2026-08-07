@@ -1,0 +1,52 @@
+{
+  "title": "心声风云四升级版 (xsfyssjb)",
+  "number": "116",
+  "subtitle": "风云Ⅳ（Sumxin 风云），以古龙小说为背景的 MUD （sumxin.com/bbs、fy.sumxin.com）。和这一轮的另一个\"风云\"手足档案 `wqfy` 是同类 bug 模式，不过底层代码库并不相同。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "心声风云四升级版",
+  "note": ""
+}

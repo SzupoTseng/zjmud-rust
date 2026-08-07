@@ -1,0 +1,52 @@
+{
+  "title": "西游记2000 (xyj2000)",
+  "number": "120",
+  "subtitle": "西游记（\"Journey to the West\"，又名\"西游记之新纪元\"），以吴承恩原 著为背景的一套老牌 MudOS mudlib，注册流程带有\"不欢迎中小学生玩家\" 的年龄声明问答，属于原始设计的一部分，不是 bug。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "西游记2000",
+  "note": ""
+}

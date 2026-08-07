@@ -1,0 +1,27 @@
+{
+  "title": "笑傲江湖（海洋二）",
+  "subtitle": "笑傲江湖(海洋二)",
+  "source": "zjmud-collection",
+  "config": "config.xajh",
+  "encoding": "UTF-8（由 import-lib.mjs 轉換）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "004",
+        "005",
+        "006",
+        "014",
+        "100"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "note": ""
+}

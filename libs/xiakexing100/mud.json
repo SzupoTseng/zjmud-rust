@@ -1,0 +1,52 @@
+{
+  "title": "侠客行一百 (Xia Ke Xing - Yi Bai)",
+  "subtitle": "取材自金庸小说《侠客行》，作者 \"Coollizard\" 与 \"xkx100\" 团队自 2001 年 起维护，属于本项目中\"Century 家族\"（`adm/single/` 目录结构）武侠 mudlib 分支之一，是这批游戏中文件数量最多的一个（转换后约 1.2 万个 LPC 文件）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "030",
+  "upstreamName": "侠客行一百 (Xia Ke Xing - Yi Bai)",
+  "note": ""
+}

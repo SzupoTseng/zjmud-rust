@@ -1,0 +1,52 @@
+{
+  "title": "神魔（西游记之神魔传说）",
+  "subtitle": "属于\"ES II / Neolith\"引擎家族（与本项目中的神州、随缘洗剑录等同宗）， 是一个从 1994 年一路开发维护到 2013 年的长寿老牌 MUD，多位巫师先后 参与过其代码。本项目转换过的体量最大的资料包之一（三万余个源码 文件）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "049",
+  "upstreamName": "神魔（西游记之神魔传说）",
+  "note": ""
+}

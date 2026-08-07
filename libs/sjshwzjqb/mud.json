@@ -1,0 +1,52 @@
+{
+  "title": "三界神话完整加强版「泉州师院」(sjshwzjqb)",
+  "number": "103",
+  "subtitle": "\"三界神话\"系列第五个、也是最后一个档案（另见 099 `sjsh`/宝鸡站、 100 `sjshv150`/紫藤分站、101 `sjshv2578bb`/测试二区、102 `sjshwzb` /泉州师院完整版），和 102 `sjshwzb` 同源，核心文件（`master.lpc`/ `securityd.lpc`/`logind.lpc`）与已知 bug 集合完全一致： `master.lpc` 的 `log_error()`/`",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "三界神话完整加强版",
+  "note": ""
+}

@@ -1,0 +1,52 @@
+{
+  "title": "炎黄武魂public-final-2016-12-08 (yhwhpublicfi)",
+  "number": "130",
+  "subtitle": "Doing 一脉的又一个分支（`master.lpc` 文件头注明\"for ES II mudlib... updated by Doing Lu for hell (2K), modified by Linux@lxtx for yh 2003.3\"），游戏内标题为《武林群侠传》之炎黄武魂。注册流程采用姓+ 名分开输入，管理密码/登陆密码双密码制，角色创建时以 5 选 1 的角色 类型菜单（猛士/智慧/耐力/敏捷/均衡）取代天赋随机菜",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "炎黄武魂public-final-2016-12-08",
+  "note": ""
+}

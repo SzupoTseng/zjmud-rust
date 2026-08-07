@@ -1,0 +1,49 @@
+{
+  "title": "东方故事II ＋ 侠客行 (南京河海大学校内版1.01)",
+  "number": "144",
+  "subtitle": "ES2/侠客行系混血引擎，南京河海大学计算机学院测试版，注册流程简单 直接（无需 `new` 关键字，任意未使用的英文 id 都会触发新角色确认）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

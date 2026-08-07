@@ -1,0 +1,52 @@
+{
+  "title": "郑州风云3 (zzfy3)",
+  "number": "139",
+  "subtitle": "《郑州风云3》（游戏内横幅：风云系列之天下无敌）。以古龙小说为背 景的风云系列 MUD，由长孙无情（Xgchen）建立。档案里有一个巫师个 人目录 `u/wiz/u/xxy/`，里面是真正的游戏内容（武功/NPC 档案，不 是死代码备份），另外还有几份真正没用的 `logind.lpc` 备份放在 `d/wiz/xgchen/`、`u/wiz/u/china/`、`u/wiz/u/lxh/` 下——用 `include/globals.",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "郑州风云3",
+  "note": ""
+}

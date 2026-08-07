@@ -1,0 +1,52 @@
+{
+  "title": "金庸群侠传 (原名\"侠客行三\")",
+  "subtitle": "压缩包与内部配置文件都叫\"侠客行三\"，但实际连接进游戏后，登录横幅显示 的名字是**\"金庸群侠传\"**——经比对，这份存档与本项目中的 jinyongqunxiazhuan2008 系列共享同一套 master 核心代码，是同一引擎不同 时期的换皮/内容版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "031-4",
+  "upstreamName": "金庸群侠传 (原名\"侠客行三\")",
+  "note": ""
+}

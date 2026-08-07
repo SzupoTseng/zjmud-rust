@@ -1,0 +1,52 @@
+{
+  "title": "三界神话「测试二区」(sjshv2578bb)",
+  "number": "101",
+  "subtitle": "\"三界神话\"系列第三个档案（另见 099 `sjsh`/宝鸡站、100 `sjshv150`/紫 藤分站），测试二区的内容。这份档案的 `sited.lpc` 本来就无条件允许 本地回环地址连线（没有 `sjshv150` 那种\"仅限巫师\"的限制）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "三界神话v2.578b版",
+  "note": ""
+}

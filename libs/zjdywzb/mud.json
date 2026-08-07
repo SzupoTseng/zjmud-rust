@@ -1,0 +1,52 @@
+{
+  "title": "终极地狱完整版 (zjdywzb)",
+  "number": "137",
+  "subtitle": "《终极地狱完整版》（游戏内横幅：EMPEROR OF ULTRA HELL(BLOOD & MAGIC) FROM 2002.06.2）。和本次会话已经处理过的 `zjdy2008wzb` 是 同一个 Doing 血统的家族，`master.lpc`/`logind.lpc`/`named.lpc` 结 构几乎逐行一致（原始档案本身就叫 `hell`）。注册流程为英文 ID → 确认(y/n) → 中文姓氏 → 中文名字 → 管理密码 ",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "终极地狱完整版",
+  "note": ""
+}

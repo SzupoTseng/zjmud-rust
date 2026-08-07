@@ -1,0 +1,52 @@
+{
+  "title": "月影奇缘",
+  "subtitle": "登录横幅原文亦作\"世纪西游之月影奇缘\"/\"Moon Love Story\"，一个以《西游记》 世界观为背景改编的老牌 MUD。属于 ES II 引擎系列（与 `es1_win`、 `xkx2001`、`rzrmud`、`xo` 等同源，master 文件署名可追溯到 \"Lil\"→ \"Annihilator\" 这一支）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "037",
+  "upstreamName": "月影奇缘",
+  "note": ""
+}

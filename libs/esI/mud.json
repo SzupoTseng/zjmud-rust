@@ -1,0 +1,50 @@
+{
+  "title": "东方故事 — esI（\"屠龙之战\"）",
+  "subtitle": "**东方故事**，站内活动主题为\"屠龙之战\"（Dragon Slaying War）。与本批次 的 `es1_win`（东方故事·蓝天版）同属 **ES / TMI 引擎家族**，两者核心 代码几乎一致，仅站点内容与分支细节不同。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es1-body",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/ghost/_look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "008-1",
+  "upstreamName": "东方故事 — esI（\"屠龙之战\"）",
+  "note": ""
+}

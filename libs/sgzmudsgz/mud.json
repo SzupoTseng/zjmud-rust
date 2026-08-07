@@ -1,0 +1,22 @@
+{
+  "title": "三国志MUD (sgz)",
+  "number": "145",
+  "subtitle": "mud2zjmud 自動轉換",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "telnet",
+  "loginProfile": "generic-cn",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "noboot",
+  "convert": {
+    "lastCheck": {
+      "badge": "noboot",
+      "opcodes": [],
+      "reason": "fluffos_boot 回傳 -1",
+      "acceptsCommands": null,
+      "by": "build-site"
+    }
+  },
+  "note": "LIMA 基底，driver 功能不足：check_config 的自檢要求 ARRAY_RESERVED_WORD／PACKAGE_PARSER／PACKAGE_CONTRIB 等編譯選項，本專案共用的 FluffOS WASM build 沒有。把自檢停用之後（規則原本只認 check_config.c，這台是 .lpc——已修，見 §D43）確實前進一層，但立刻撞上 `void printf(string format, array rest...)`：`array` 這個型別關鍵字正需要 ARRAY_RESERVED_WORD。停用自檢只是把失敗往後推——上游說的「需要另建 LIMA 專用 driver」是對的。"
+}

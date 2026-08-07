@@ -1,0 +1,52 @@
+{
+  "title": "笑傲江湖之重出江湖",
+  "subtitle": "作者 AKAI，脱胎自\"夕阳再现－江湖风云2－风云再起\"引擎（属于\"夕阳再现 /XYZX\"系列衍生分支，与本项目收录的多部同系列作品——如《侠客风云》 《西阳再现疯狂版》等——师出同门，但游戏内容各自独立开发）。archive 名称中的\"服务端+客户端\"其实指的是同一套游戏支持两种连线协议（普通 telnet 客户端 和 TOMUD 菜单客户端），并不是额外附带了一个独立的客户端 程序。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "050",
+  "upstreamName": "笑傲江湖之重出江湖",
+  "note": ""
+}

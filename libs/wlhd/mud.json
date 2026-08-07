@@ -1,0 +1,52 @@
+{
+  "title": "武林浩荡 (wlhd)",
+  "number": "105",
+  "subtitle": "游戏内品牌为《金庸梦II》/《武林浩荡》。这份档案和 104 `tybxjh` （天涯之碧血江湖）明显是同源代码——`master.lpc`/`securityd.lpc`/ `logind.lpc` 结构几乎一致，注册提示文字相同，`wiz_levels` 权限阶 梯一样到 `(ceo)` 为止，`globals.h` 里连\"决定用哪个 `SECURITY_D`\" 的注释掉的备用行都相同。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "武林浩荡",
+  "note": ""
+}

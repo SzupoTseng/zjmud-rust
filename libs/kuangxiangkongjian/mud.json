@@ -1,0 +1,48 @@
+{
+  "title": "狂想空间",
+  "number": "036-1",
+  "subtitle": "1995 年 9 月 22 日创建的老牌台湾 MUD（创始团队 wade、shorst、jcder 等），属于 ES II 引擎系列（与本项目中的 es1_win、esI、xkx2001、 rzrmud、侠客行系列等同宗）。本项目中还有另一个档案\"新狂想空间II\" （增加了邮箱注册等更新内容），两者虽然都自称\"狂想空间\"，但经比对是 两个不同时期、独立流传的版本。本档案是相对更早的一个存档快照。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 8 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

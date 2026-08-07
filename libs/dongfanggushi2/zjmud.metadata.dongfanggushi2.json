@@ -1,0 +1,71 @@
+{
+  "name": "dongfanggushi2",
+  "generatedBy": "webclient/tools/extract-zjmud-metadata.mjs",
+  "rules": [
+    {
+      "match": "您的英文名字：",
+      "send": "{id}",
+      "note": "name"
+    },
+    {
+      "match": "新的人物.*\\(y\\/n\\)|您确定吗\\(y\\/n\\)",
+      "send": "y",
+      "note": "confirm"
+    },
+    {
+      "match": "请再输入一次您的密码",
+      "send": "{pw}",
+      "note": "pw-confirm"
+    },
+    {
+      "match": "重设您的密码|重新设定.{0,6}密码|请设定您的密码：",
+      "send": "{pw}",
+      "note": "pw"
+    },
+    {
+      "match": "电子邮件地址：",
+      "send": "a@b.c",
+      "note": "email"
+    },
+    {
+      "match": "你的选择：",
+      "send": "human",
+      "note": "race"
+    },
+    {
+      "match": "男性\\(m\\)的角色或女性\\(f\\)",
+      "send": "{gender}",
+      "note": "gender"
+    },
+    {
+      "match": "您的中文名字：",
+      "send": "{name}",
+      "note": "cname"
+    }
+  ],
+  "specs": {
+    "id": {
+      "min": 3,
+      "max": 12,
+      "charset": "^[a-z]+$",
+      "hint": "3–12 個小寫英文字母（不能有數字）"
+    },
+    "pw": {
+      "min": 5,
+      "hint": "至少 5 個字元"
+    },
+    "cname": {
+      "min": 1,
+      "max": 6,
+      "chinese": true,
+      "hint": "1–6 個中文字"
+    },
+    "gender": {
+      "options": [
+        "m",
+        "f"
+      ],
+      "hint": "男 m／女 f"
+    }
+  }
+}

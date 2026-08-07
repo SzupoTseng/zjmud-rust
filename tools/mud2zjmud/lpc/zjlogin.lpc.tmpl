@@ -1,0 +1,553 @@
+
+// ══ [zjmud] 原生登入 ══════════════════════════════════════════
+// 由 mud2zjmud 注入。這段程式碼讓 mudlib **自己**說 zjmud 協議：
+// 握手、帳號欄位、建角欄位、狀態碼全部由伺服器端發出，
+// 客戶端只要是標準 zjmud 客戶端就能連，不需要任何 telnet 對話接應器。
+//
+// 【WHY 注入 logind 而不是獨立 daemon】建立新角色必須呼叫
+// `init_new_player()`，而它在每一家的 logind 裡都是 `private` 的。
+// 獨立 daemon 叫不到，就只能自己重寫一份初始化——那等於把
+// 「這個 mud 的新角色長什麼樣」複製一份出來，兩邊遲早漂移。
+// 注入本檔之後，原生登入走的是**這個 mud 原本就在走的那條路**。
+//
+// 【協議出處】原生 zjmud 台 `adm/daemons/logind.c`（終極地獄）：
+//   logon    → "ver1.0," + crypt(ZJKEY,0)          握手（dmjh 方言）
+//   jiance   → "版本验证成功"                       版本確認
+//   get_user → 账号║密码║密文║email                 帳號欄位
+//   get_char → 性别║头像║昵称                       建角欄位
+//   狀態碼：ESC000 0007 登入成功 / 0008 請建立角色 / 0001 ID 不合法
+// ══════════════════════════════════════════════════════════════
+
+// 各家的輔助函數簽名不一致，統一經由巨集轉發（由 mud2zjmud 依實際簽名生成）。
+// 【WHY 巨集要放在**注入區塊內**】放在區塊外的話，每重跑一次轉換就多累積一份
+// `#define`——實測跑三次就出現三份 ZJ_LEGAL_ID。重複定義本身只是警告，
+// 但它是「移除舊版注入」沒有真正移除乾淨的**症狀**，
+// 而下一個變動（例如巨集內容改了）就會因為舊定義還在而失效。
+{{MACROS}}
+// 診斷輸出：預設關閉。builder 加 `--debug` 時才定義 ZJ_DEBUG。
+//
+// 【WHY 做成常駐而不是臨時插入】上一輪臨時插 `write()` 把模板編譯壞了，
+// trace 完全沒有輸出——而那時無法分辨是「被查的東西壞了」還是「探針壞了」，
+// 整輪就浪費在這上面。**診斷工具本身也要先被驗證**：做成常駐巨集，
+// 就能先在一台已知可玩的台上打開它、確認不影響編譯，再拿去查有問題的台。
+#ifdef ZJ_DEBUG
+#define ZJDBG(x)  write(ZJTMPSAY "DBG " + (x) + "\n")
+// ★ 不依賴 this_player() 的探針。
+//
+// 【WHY】ZJDBG 用的是 `write()`，而 `write()` 寫給 **this_player()**。
+// 有些家族的 `init_new_player()` 內部會呼叫 `enter_world()`，那裡面的
+// `exec(user, ob)` 會把互動物件從登入殼換成人物——之後的 `write()`
+// 就寫給了已經被換掉的物件，輸出直接消失。
+// 於是「執行真的中止了」與「執行沒事、只是輸出不見了」在畫面上**長得一模一樣**，
+// 而這兩者要修的東西完全不同。診斷工具分不出來的兩件事，
+// 就是下一輪會查錯方向的地方（西游记451 卡了好幾輪就是這個原因）。
+// 【判準】直接 tell_object 到指定物件，繞過 this_player 的不確定性。
+// ★ 兩條路都送：write()（this_player）＋ tell_object(u)。
+// 【WHY 不能只用 tell_object】第一版只送 tell_object(ob)，結果在**完全正常**的
+// xyj42 上兩行都沒印出來——登入殼不是有效的輸出目標。當時我差點據此宣稱
+// 「xyj451 的中斷點比原先認定的更早」，而那個結論完全建立在**啞掉的探針**上。
+// 【教訓】探針要驗的不是「會不會編譯」，是「**會不會出聲**」。
+// 先在一台已知可玩的台上看到它真的印出來，再拿去查有問題的台（spec §D6 的加強版）。
+#define ZJDBGT(u, x)  do { write(ZJTMPSAY "DBG " + (x) + "\n"); \
+    if (objectp(u) && (u) != this_player()) tell_object((u), ZJTMPSAY "DBG* " + (x) + "\n"); } while(0)
+#else
+#define ZJDBG(x)
+#define ZJDBGT(u, x)
+#endif
+
+void zj_verify(string arg, object ob, string str);
+void zj_get_user(string arg, object ob);
+void zj_get_char(string arg, object ob);
+
+// 把帳號正規化成老 mudlib 收得下的形式。
+//
+// 【WHY】這一系的 `check_legal_id()` 逐字檢查 `id[i] < 'a' || id[i] > 'z'`，
+// 帳號裡只要有一個數字就整個被拒（狀態碼 0001）。而 zjmud 客戶端的
+// 帳號欄位本來就允許數字——使用者不會知道自己踩到的是哪一台的規矩。
+//
+// 【WHY 數字要「映射」而不是「刪掉」】刪掉會讓 `user1` 與 `user2`
+// collapse 成同一個 `user`——兩個人共用一個存檔。映射成字母
+// （1→a、2→b…）是**單射**的：不同帳號永遠得到不同結果，
+// 而且是確定性的，同一個帳號每次都對到同一個角色。
+string zj_clean_id(string s)
+{
+    string out;
+    int i;
+
+    out = "";
+    for (i = 0; i < strlen(s); i++) {
+        if (s[i] >= 'a' && s[i] <= 'z')
+            out += s[i..i];
+        else if (s[i] >= '0' && s[i] <= '9')
+            out += ({ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" })[s[i] - '0'];
+    }
+    return out;
+}
+
+// 沒有 make_body() 的 lib 用這個最小實作。
+//
+// 【WHY 需要】es1_win／esI 的 logind 連 make_body 都沒有——
+// 它們用別的方式產生人物。模板無條件呼叫就是 `Undefined function make_body`
+// → 整個 logind 編譯失敗 → 「撥號失敗」。
+// 最小實作只做 make_body 的共同部分：clone 使用者物件、把 uid 與 id 帶過去。
+// 各家額外做的事（語言、姓名結構）由 enter_world／setup 補上。
+object zj_make_body(object ob)
+{
+    object user;
+
+#ifdef ZJ_USER_OB
+    user = new(ZJ_USER_OB);          // 由 builder 在轉換時查出來、寫死進來
+#else
+    user = new(ob->query("body"));
+#endif
+    if (! user) return 0;
+    // ★ uid 轉移要防禦性地做。
+    //
+    // 【WHY】`seteuid(ob->query("id"))` 在某些家族**會失敗**——那個 id 還不是
+    // 一個已註冊的 uid（各家的 SECURITY_D 政策不同）。失敗之後 euid 是 0，
+    // 接著 `export_uid()` 就拋 `*Illegal to export uid 0`，而那個錯誤發生在
+    // **握手之後、送出任何 opcode 之前**，客戶端只看到連線靜止——
+    // 報告寫「停在 authing，沒有收到任何 opcode」，完全看不出是 uid 的問題。
+    // 【證據】es1_win：`执行时段错误：*Illegal to export uid 0`，
+    // 呼叫鏈 `zj_get_user() → zj_make_body() → export_uid()`。
+    // 【推理】uid 轉移是**最佳化**（讓人物物件帶著玩家自己的權限），
+    // 不是必要條件：轉不了就用 daemon 自己的 euid，人物照樣建得起來。
+    if (stringp(ob->query("id")) && seteuid(ob->query("id"))) {
+        catch(export_uid(user));
+        catch(export_uid(ob));
+    }
+    seteuid(getuid());
+    user->set("id", ob->query("id"));
+    if (ob->query("name")) user->set("name", ob->query("name"));
+    return user;
+}
+
+void zj_logon(object ob)
+{
+    string str;
+
+    write("\n");
+    str = crypt(ZJKEY, 0);
+    write("ver1.0," + str + "\n");
+    input_to("zj_verify", ob, str);
+}
+
+void zj_verify(string arg, object ob, string str)
+{
+    if (! arg) {
+        input_to("zj_verify", ob, str);
+        return;
+    }
+    // 【WHY 不驗證回傳值】原生台那段檢查本身就是註解掉的
+    // （`else /*if (arg!=crypt(ZJKEY,str[2..3])...*/`）——
+    // 金鑰是寫死在標頭裡的公開常數，擋不住任何人，只會擋掉合法客戶端。
+    write("版本验证成功\n");
+    input_to("zj_get_user", ob);
+}
+
+void zj_get_user(string arg, object ob)
+{
+    object user, old_link;
+    string *info, id;
+
+    if (! arg || arg == "") {
+        input_to("zj_get_user", ob);
+        return;
+    }
+    info = explode(arg, "║");
+    if (sizeof(info) < 2) {
+        write(ZJTMPSAY "账号资料不完整，请重试。\n");
+        input_to("zj_get_user", ob);
+        return;
+    }
+    id = zj_clean_id(lower_case(info[0]));
+    if (! ZJ_LEGAL_ID(id, ob)) {
+        // 0001：ID 不合法
+        write(SYSY "0001\n");
+        input_to("zj_get_user", ob);
+        return;
+    }
+    ob->set("id", id);
+    ob->set("password", crypt(info[1], id[0..1]));
+#ifdef ZJ_USER_OB
+    // 【WHY】有些家族的 make_body 是讀 `ob->query("body")` 取使用者物件路徑
+    // （北美侠客行），有些直接用 USER_OB（終極地獄）。設起來兩種都相容。
+    if (! ob->query("body")) ob->set("body", ZJ_USER_OB);
+#endif
+
+    write("\n");
+
+    // ① 已經在線上 → 踢掉舊連線後接管
+    user = ZJ_FIND_BODY(id);
+    // ★ 找到的物件要**驗明正身**。
+    //
+    // 【WHY】沒有 `find_body()` 的 lib 我們退回 driver 的 `find_player()`，
+    // 但某些家族的 `find_player()` 對全新帳號也會回傳非空物件
+    // （它們的實作會把登入中的殼算進去）。於是流程走進「這個帳號已經在線上」
+    // 分支去做 reconnect——而那個物件根本不是人物，沒有房間、沒有屬性，
+    // 結果是 0007 送出去了、世界卻是空的。症狀是「登入成功但畫面空白」，
+    // 而**建角那段程式碼從來沒被執行過**（實測插診斷輸出，一行都沒印出來）。
+    //
+    // 【推理】判準要能指到事實：真正的人物身上一定有對得上的 id。
+    if (user && user->query("id") != id) user = 0;
+    if (user) {
+        old_link = user->query_temp("link_ob");
+        if (old_link) {
+            if (interactive(user)) {
+                tell_object(user, "你的账号在别处登录，你被迫下线了！\n");
+                exec(old_link, user);
+            }
+            destruct(old_link);
+        }
+        write(SYSY "0007\n");
+        write(ZJTMPSAY "登录成功，正在加载世界。。。\n");
+        ZJ_RECONNECT(ob, user);
+        call_out("zj_first_look", 2, user, 0);
+        return;
+    }
+
+    // ② 有存檔 → 讀回來直接進世界
+    if (objectp(user = ZJ_MAKE_BODY(ob))) {
+        user->set_temp("link_ob", ob);
+        if (file_size(user->query_save_file() + __SAVE_EXTENSION__) >= 0) {
+            if (user->restore()) {
+                write(SYSY "0007\n");
+                write(ZJTMPSAY "登录成功，正在加载世界。。。\n");
+                ZJ_ENTER(ob, user);
+    ZJDBG("entered env=" + (environment(user) ? file_name(environment(user)) : "0"));
+                call_out("zj_first_look", 2, user, 0);
+                return;
+            }
+            write(ZJTMPSAY "人物存档出现问题。\n");
+            input_to("zj_get_user", ob);
+            return;
+        }
+        destruct(user);
+    }
+
+    // ③ 全新帳號 → 0008 請客戶端顯示建角表單
+    write(SYSY "0008\n");
+    input_to("zj_get_char", ob);
+}
+
+void zj_get_char(string arg, object ob)
+{
+    mixed zjerr;
+    ZJDBG("get_char 進入 arg=" + (arg ? arg : "0"));
+    object user;
+    string *info, cname;
+
+    if (! arg || arg == "") {
+        input_to("zj_get_char", ob);
+        return;
+    }
+    info = explode(arg, "║");
+    if (sizeof(info) < 3) {
+        write(ZJTMPSAY "角色资料不完整，请重试。\n");
+        input_to("zj_get_char", ob);
+        return;
+    }
+    cname = info[2];
+    // 【WHY 不呼叫 lib 自己的 check_legal_name】各家的簽名與**回傳語意**都不同：
+    // 北美是 `string check_legal_name(string, object)`（回錯誤訊息，非 0 代表**不合法**），
+    // 終極地獄是 `int check_legal_name(string, int maxlen)`（非 0 代表**合法**）。
+    // 語意相反，猜錯就會把所有名字擋掉或全部放行。這裡只做長度把關，
+    // 真正的內容審查交給各家自己的 NAME_D（make_body 之後仍會生效）。
+    if (strlen(cname) < 2 || strlen(cname) > 24) {
+        // 0009：暱稱不符合要求
+        write(SYSY "0009\n");
+        input_to("zj_get_char", ob);
+        return;
+    }
+
+    ob->set("purename", cname);
+    ob->set("name", cname);
+    if (! objectp(user = ZJ_MAKE_BODY(ob))) {
+        write(ZJTMPSAY "建立角色失败。\n");
+        input_to("zj_get_char", ob);
+        return;
+    }
+    user->set_temp("link_ob", ob);
+    user->set("name", cname);
+    user->set("gender", info[0] == "female" || info[0] == "女性" ? "女性" : "男性");
+    if (strlen(info[1])) user->set("img", info[1]);
+
+    // 天賦：telnet 版是逐項問玩家，zjmud 客戶端沒有這一關，
+    // 所以取各家共通的中間值。這正是「原生化」要吸收掉的那一段對話。
+    user->set("str", 20);
+    user->set("int", 20);
+    user->set("con", 20);
+    user->set("dex", 20);
+    user->set("kar", 20);
+    user->set("per", 20);
+#ifdef ZJ_SET_REGISTERED
+    // 已註冊標記：telnet 版走完註冊才會設，而它決定**指令搜尋路徑**——
+    // 沒設的話 /cmds/skill/ 整個目錄不在路徑裡，「技能」那類按鈕會回「什么？」。
+    ZJ_SET_REGISTERED(user);
+#endif
+#ifdef ZJ_SET_BORN
+    // 出生地保底：telnet 版在註冊室問這一題，zjmud 客戶端沒有那一關。
+    // 沒設的話，這台自己的 hp／score／special 會回「还没有出生呐」把玩家擋住。
+    ZJ_SET_BORN(user);
+#endif
+#ifdef ZJ_SET_VITALS
+    // 生命值保底：init_new_player 被 catch 掉時，這些值本來會沒人設。
+    // 只補這台實際使用的欄位（由 builder 掃角色物件決定）。
+    ZJ_SET_VITALS(user);
+#endif
+
+    // ★ 成功碼要在 init_new_player **之前**送。
+    //
+    // 【WHY】风云Ⅱ 系的 `init_new_player()` **內部就會呼叫 enter_world**，
+    // 而 enter_world 會 `exec(user, ob)` 把互動物件從登入物件換成人物。
+    // 等它回來再 `write(SYSY "0007")`，那個 write 是寫給**已經被換掉的**
+    // 登入物件——輸出直接消失。客戶端只收到 0008 就再也沒有下文，
+    // 症狀是「停在建角畫面」，但伺服器端其實已經把角色放進世界了
+    // （歡迎畫面、`目前权限：(player)` 都印出來了，只是客戶端不知道）。
+    //
+    // 【推理】0007 的語意是「帳號驗證通過、要開始送世界資料了」，
+    // 提前送不會有副作用；而放在後面則**依賴 init_new_player 不做多餘的事**——
+    // 那是一個各家實作都不保證的假設。
+    write(SYSY "0007\n");
+#ifdef ZJ_START_ROOM
+    // ★ 新人物必須有 `startroom`。
+    //
+    // 【WHY】各家的 `enter_world()` 是這樣決定去哪的：
+    //   `err = catch(room = load_object(user->query("startroom")));`
+    //   `if (!room) err = catch(room = load_object(START_ROOM));`
+    // 而 `startroom` 本來是 `init_new_player()` 的工作。我們對會拋錯的
+    // init 用了 catch 退路（es1 系的 setup() 會炸），於是這個欄位是空的——
+    // `load_object(0)` 失敗，人物**沒有被放進任何房間**，`environment()` 永遠是 0，
+    // 面板因此一個都送不出去。症狀是「登入成功但畫面空白」，看起來像面板壞了。
+    // 【證據】火影 `adm/daemons/logind.lpc enter_world()`；
+    // es1_win 執行期錯誤鏈 `setup() → init_setup()`。
+    // 【推理】補上 mud 自己宣告的 START_ROOM，不是我們憑空指定的位置。
+    if (! user->query("startroom")) user->set("startroom", ZJ_START_ROOM);
+#endif
+    // ★ 初始化一律用 catch 包住。
+    //
+    // 【WHY】`init_new_player()` 在各家做的事差很多（clone 新手物品、寫檔、
+    // 呼叫其他 daemon），任何一環缺件都會拋錯。不接住的話**整個 zj_get_char
+    // 從那一行中斷**——後面的「排程進世界／首次看房間」全部沒執行，
+    // 人物因此永遠沒落地，客戶端看到「登入成功、畫面空白」。
+    // 【推理】人物在這一行之前就已經建好了（make_body 成功）。初始化失敗
+    // 只代表少了一些預設值，不該讓整個建角作廢——**能進世界的殘缺角色，
+    // 遠比進不了世界的完整角色有用**。
+    // 把「原生化補進去的欄位」一起印出來——它們是最常見的靜默失敗來源，
+    // 而且每一個都對應到世界裡的一塊功能（registered→指令搜尋路徑、
+    // born→hp/score 之類的守衛）。沒印出來就只能猜。
+    ZJDBGT(ob, "init 之前 user=" + (objectp(user) ? "有" : "無")
+        + " registered=" + (objectp(user) ? (string)user->query("registered") : "?")
+        + " born=" + (objectp(user) && stringp(user->query("born")) ? "有" : "無"));
+    // ★ catch 的結果要留下來，不要靜默吞掉。
+    //
+    // 【WHY】`catch()` 把 init 的錯誤吃掉是刻意的（殘缺角色好過沒有角色），
+    // 但**吃掉之後連我們自己都不知道發生了什麼**。實測 sj：`/cmds/skill/`
+    // 整個目錄不可達（`hp`、`look` 正常，`skills`／`tuna`／`practice` 全回「什麼？」），
+    // 而 `enable_player()`——決定指令搜尋路徑的那一行——就在 `setup()` 裡面。
+    // 如果 setup() 在到達它之前就拋錯，路徑永遠停在受限的那一份，
+    // 症狀是「有幾個目錄的指令全部消失」，完全指不到真因。
+    // 【判準】錯誤字串本身就是證據，`--debug` 時印出來即可（正式建置不受影響）。
+    zjerr = catch(ZJ_INIT_NEW(user, ob));
+    // ★ init **之後**的探針一律指向人物（user），不能指向登入殼、也不能用 write()。
+    // 【WHY】`setup()` 內部若做過 `exec(user, ob)`，這個執行框的 `this_player()`
+    // 仍然是舊的登入殼（this_player 是進入指令時決定的，不會跟著 exec 改），
+    // 於是 `write()` 送到已經被換掉的物件、`tell_object(ob)` 送到非互動物件——
+    // **兩條路都是啞的**。我因此連續三輪把「探針沒印」誤讀成「執行中止」。
+    // ★★ 用**狀態**追蹤，不要用輸出。
+    //
+    // 【WHY】`setup()` 回來的這一瞬間，輸出是黑的：`this_player()` 還是登入殼
+    // （this_player 在進入指令時就定了，不隨 exec 改變），而登入殼不是有效的
+    // 輸出目標；`tell_object(user)` 這時 user 也還不是互動物件。
+    // 於是「執行緒死了」與「執行了但沒人看得到」在畫面上**完全一樣**——
+    // 我連續三輪據此下了錯的結論（先是「中斷點更早」，再是「死在 setup()」）。
+    // 【判準】把進度**寫進人物的欄位**：狀態跨執行框存活，輸出不會。
+    // 下一個執行框（zj_first_look，由 call_out 觸發）再把它印出來，那時輸出是通的。
+    if (objectp(user)) user->set("zj_dbg_init", zjerr ? zjerr : "ok");
+    ZJDBGT(user, "init err=" + (zjerr ? zjerr : "無"));
+    // 兩個目標都送一次：ob（登入殼）與 user（人物）。
+    // exec() 換過之後只有其中一個收得到——收到哪一個本身就是證據。
+    ZJDBGT(ob, "init 之後（送給登入殼）");
+    ZJDBGT(user, "init 之後（送給人物）");
+    // ★ 初始化之後人物**可能已經不存在了**。
+    //
+    // 【WHY】`ZJ_INIT_NEW` 展開成 `(u)->setup()` 這種**跨物件呼叫**時，
+    // 對方內部若 `destruct(this_object())` 或觸發 driver 層的中止，
+    // `catch()` 接不住——它只接得住 LPC 層的 error，接不住物件消失。
+    // 之後任何 `user->...` 都是對空物件操作，整個函數靜默中止。
+    // 【證據】西游记451（xyj451）：`get_char 進入` 的探針印得出來，
+    // 而緊接在 catch 之後的 `after-init` 探針**一行都沒有**——
+    // 中斷點就在那一行，而且不是 LPC error（無編譯錯誤、無執行期錯誤訊息）。
+    // 【推理】物件沒了就重建一個：make_body 是冪等的，
+    // 而「有一個殘缺但存在的人物」遠比「沒有人物」有用。
+    if (! objectp(user)) {
+        ZJDBG("init 之後 user 消失了，重建一個");
+        if (! objectp(user = ZJ_MAKE_BODY(ob))) {
+            write(ZJTMPSAY "建立角色失败。\n");
+            input_to("zj_get_char", ob);
+            return;
+        }
+        user->set_temp("link_ob", ob);
+        user->set("name", cname);
+        user->set("gender", info[0] == "female" || info[0] == "女性" ? "女性" : "男性");
+    }
+    ZJDBG("after-init env=" + (environment(user) ? file_name(environment(user)) : "0"));
+    // 【WHY call_out 一拍】原生台就是這樣做的：init_new_player 裡可能
+    // 有 clone 物件與 setup()，同一拍內直接 enter_world 會撞上尚未完成的狀態。
+    // 【WHY 要檢查是否已經在世界裡】承上，有些家族的 init_new_player
+    // 已經把人物送進世界了；再 enter_world 一次會重複執行整段進場流程
+    // （重複的歡迎訊息、重複的 setup、甚至重複 clone 新手物品）。
+    // 判準用 `environment()`：人物有所在地就代表已經進場。
+    if (! environment(user))
+        call_out("zj_enter", 1, ob, user);
+    else
+        call_out("zj_first_look", 2, user, 0);
+}
+
+// enter_world 的參數個數各家不同（泥潭要五個），統一經由巨集轉發；
+// call_out 只能指名函式，所以包一層。
+void zj_enter(object ob, object user)
+{
+    // 這一行是為了分辨兩件在畫面上長得一樣的事：
+    // ① 排程根本沒觸發（logind 物件連同它的 call_out 一起被銷毀了）
+    // ② 排程有觸發，但 enter_world 沒把人放進房間
+    ZJDBGT(user, "zj_enter 觸發 user=" + (objectp(user) ? "有" : "無"));
+    // ★ 進世界也要 catch。
+    //
+    // 【WHY】`enter_world()` 各家做的事同樣差很多（載入起始房間、檢查存檔、
+    // 呼叫 UPDATE_D／MARRY_D…），缺件就拋錯。而這裡是 `call_out()` 的回呼——
+    // **回呼裡拋錯是靜默的**：沒有錯誤訊息傳到客戶端，也不會中斷別的流程，
+    // 就只是「什麼都沒發生」。es1_win 實測：`after-init env=0` 之後
+    // 一行診斷都沒有，人物永遠停在無房間狀態。
+    // 【推理】進不了世界時，至少把人放進這個 mud 自己宣告的起始房間——
+    // 那比讓使用者看一片空白有用。
+    catch(ZJ_ENTER(ob, user));
+#ifdef ZJ_START_ROOM
+    // ★ 不只要「有房間」，還要是**走得出去的**房間。
+    //
+    // 【WHY】enter_world() 被 catch 接住時，人物可能停在它半途的位置——
+    // 泥潭系實測：`enter_world() → analectad->prompt_user()` 第 255 行拋錯，
+    // 人物落在一個**沒有出口也沒有物件**的中繼房間。連線靠 exec 接手救回來了，
+    // 面板也送得出去，但 003（出口）／005（物件）／022（血條）三個 opcode
+    // **沒有內容可送**——分數卡在 6/9，而症狀看起來像「這三個 opcode 沒實作」。
+    // 【推理】判準要看得到事實：`query("exits")` 是不是一個非空的 mapping。
+    // 不是的話就移到這個 mud 自己宣告的起始房間——那裡一定走得通。
+    if (! environment(user)
+        || ! mapp((mapping)environment(user)->query("exits"))
+        || ! sizeof(keys((mapping)environment(user)->query("exits"))))
+        catch(user->move(ZJ_START_ROOM));
+#endif
+    // ★ 連線要真的交給人物物件。
+    //
+    // 【WHY】`exec(user, ob)` 是 `enter_world()` 裡的一步——把互動連線從登入物件
+    // 轉移到人物物件。我們用 catch 接住 enter_world 的錯誤之後，**它可能在 exec
+    // 之前就拋掉了**，於是連線仍綁在登入物件上。
+    // 後果非常隱蔽：面板 daemon **完全正常地執行完畢**（實測探針印出
+    // `panel-call short=map` 與 `panel-done`），opcode 也確實產生了，
+    // 但 `tell_object(user, …)` 是送給一個**沒有連線的物件**——送進虛空。
+    // 客戶端因此收到 0007 之後就再也沒有東西，看起來像面板沒被呼叫。
+    // 【推理】判準可以直接觀察：`interactive(user)` 為假就代表轉移沒完成。
+    if (objectp(user) && ! interactive(user)) {
+        user->set_temp("link_ob", ob);
+        ob->set_temp("body_ob", user);
+        catch(exec(user, ob));
+    }
+    ZJDBG("entered env=" + (environment(user) ? file_name(environment(user)) : "0"));
+    call_out("zj_first_look", 2, user, 0);
+}
+
+// 進世界後主動看一次房間。
+//
+// 【WHY 需要這一步】面板 opcode（房間標題／描述／出口／物件／血條）是掛在
+// `look` 指令上的——玩家看房間時才翻譯成協議。原生 zjmud 台的進場流程
+// 本來就會帶出一次房間顯示，但各家 telnet lib 的 `enter_world` 不一定會：
+// 實測 风云Ⅱ 系進世界後畫面只有歡迎詞，客戶端收到 0007 之後**一個面板都沒有**，
+// 使用者看到的是空白介面（而伺服器端一切正常）。
+//
+// 【WHY 不用 command("look", user)】那是 MudOS 的兩參數寫法，
+// FluffOS 的 `command()` 只接受一個參數、且作用在 this_object() 上——
+// 寫成兩個參數會是 `error: Too many arguments to 'command'`，
+// 而失敗的是**整個 logind**，症狀又變成「撥號失敗」（實測一次）。
+// 直接呼叫面板 daemon 是各家都成立的做法，也不依賴指令派發。
+// 【WHY 要重試】進場不是一拍完成的：有些家族的 enter_world 自己還會
+// `call_out` 幾拍才把人物移進起始房間（风云Ⅱ 實測第 2 拍時 environment() 仍是 0）。
+// 只看一次就放棄的話，面板永遠不會送——客戶端登入成功卻是一片空白，
+// 而伺服器端看起來一切正常。最多等 5 拍（約 5 秒），之後就真的是沒進場。
+void zj_first_look(object user, int tries)
+{
+    ZJDBG("first-look tries=" + tries);
+    // 回顧：init 那一行到底跑到了沒有、有沒有拋錯（見上面「用狀態追蹤」的說明）
+    // ★★ 進世界之後要**重新叫一次 enable_player()**。
+    //
+    // 【WHY】它決定兩件事：`add_action` 掛不掛得上，以及**指令搜尋路徑**。
+    // 而各家的判準都是在呼叫的當下讀狀態的：
+    //   if (!userp(this_object())) set_path(NPC_PATH);        // 還不是玩家
+    //   else if (query("registered") == 0) set_path(UNR_PATH); // 還沒註冊
+    //   else switch (wizhood(...)) { … default: set_path(PLR_PATH); }
+    // 建角當下 `userp()` 可能還是 false（exec 尚未發生）、`registered` 也還沒設，
+    // 於是路徑被定成最窄的那一份，**而且不會自己重算**。
+    //
+    // 【證據】兩台不同機制、同一個形狀：
+    //   sj（有 registered 守衛）：量到 `/cmds/usr/ /cmds/std/`＝UNR_PATH，
+    //     `skills`／`practice`／`tuna` 全回「什麼？」
+    //   wuhanzhan（沒有 registered 守衛）：量到 `/cmds/std/`＝**NPC_PATH**，
+    //     `hp`／`skills`／`quit` 全回「什麼？」（PLR_PATH 本來有兩個目錄）
+    // 症狀都是「整個目錄的指令從玩家眼前消失」，而檔案明明就在。
+    //
+    // 【WHY 無條件重叫】第一版只在 `#ifdef ZJ_SET_REGISTERED` 裡重叫——
+    // 那等於假設「只有 registered 這一種判準會過期」。wuhanzhan 證明不是：
+    // `userp()` 也會。判準有幾種我們數不完，但「**進世界之後再算一次**」
+    // 對每一種都成立，而且對已經正確的台是無害的重算。
+    // 用 catch 包住是因為有些家族的 enable_player 有 nomask／權限檢查。
+    if (objectp(user)) {
+#ifdef ZJ_SET_REGISTERED
+        ZJ_SET_REGISTERED(user);
+#endif
+        catch(user->enable_player());
+    }
+    // living／interactive：指令派發的前提。
+    // 【WHY】好幾家的 command_hook 第一行就是
+    //   if (!wizardp(me) && !living(me)) return 0;
+    // ——不是 living 就**一個指令都收不到**，而房間面板照樣送得出來
+    // （那是伺服器主動畫的）。兩者分開印，才分得出是「沒接上輸入」
+    // 還是「接上了但找不到指令」。
+    ZJDBG("living=" + (objectp(user) && living(user) ? "是" : "否")
+        + " interactive=" + (objectp(user) && interactive(user) ? "是" : "否"));
+    // 指令搜尋路徑：好幾家把它綁在 registered／wizhood 上，
+    // 綁錯的話會整個目錄的指令消失（症狀像「這台沒有這些指令」）。
+    if (objectp(user) && pointerp(user->query_path()))
+        ZJDBG("搜尋路徑 = " + implode((string *)user->query_path(), " "));
+    ZJDBG("init 回顧 = " + (objectp(user) && stringp(user->query("zj_dbg_init"))
+        ? (string)user->query("zj_dbg_init") : "（那一行沒跑到）"));
+    object env;
+
+    if (! objectp(user)) return;
+    env = environment(user);
+    if (! objectp(env)) {
+        // 【WHY 從 5 拍拉到 15 拍】實測 翱翔天际 同一台連續兩次單獨驗證
+        // 得到 1/9 與 9/9——**進場是競態**：有些家族的 enter_world 會多繞
+        // 幾層 call_out 才把人物移進起始房間，慢的時候超過 5 拍。
+        // 等不到就完全沒有面板，使用者看到空白畫面；而重跑一次又好了，
+        // 於是看起來像「偶發故障」，最難查。等久一點的成本是零
+        // （人物一落地就立刻送，不會真的等滿）。
+        if (tries < 15) {
+            call_out("zj_first_look", 1, user, tries + 1);
+            return;
+        }
+#ifdef ZJ_START_ROOM
+        // 【WHY 最後自己放人】等滿了還沒有環境，代表這台的初始化鏈中途斷了
+        // （es1 系實測 `setup()` → `init_setup()` 拋錯）。人物其實已經建好，
+        // 只是沒被放進世界。與其讓使用者看一片空白，不如放進起始房間——
+        // 那是這個 mud 自己宣告的位置，不是我們憑空指定的。
+        catch(user->move(ZJ_START_ROOM));
+        env = environment(user);
+        if (! objectp(env)) return;
+#else
+        return;
+#endif
+    }
+    ZJDBG("panel-call short=" + (stringp(env->query("short")) ? "map" : (stringp(env->query_short()) ? "getter" : "none")));
+    "/adm/daemons/zjmudd"->room_panel(user, env);
+    "/adm/daemons/zjmudd"->status_panel(user);
+    ZJDBG("panel-done");
+}

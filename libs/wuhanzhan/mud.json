@@ -1,0 +1,49 @@
+{
+  "title": "大话西游 (A Chinese Odyssey)",
+  "number": "040",
+  "subtitle": "原始压缩包名为\"武汉站\"，但这只是收藏者标注的站点标签——游戏自身的 config 与登录横幅都写明真正的名字是**\"大话西游\"**，由湖北楚天热线 旗下的襄樊分站运营。属于 ES II（Eastern Stories II）引擎系列，与本 项目中的 weimingkongjian、tiexuejianghu 等同宗但各自独立开发。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

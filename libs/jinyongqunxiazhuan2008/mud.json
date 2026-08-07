@@ -1,0 +1,52 @@
+{
+  "title": "金庸群侠传（2008 加强版）",
+  "subtitle": "本游戏自称 **金庸群侠传**，本压缩包对应\"2008加强版\"这一内容版本。属于 \"ES II\"引擎家族的一个独立分支（源自作者 Phoebus.suny 1998 年的 ES2 \"天曹地国\"版本），本项目中还收录了同一引擎核心的另外两个内容版本 （标准版、超豪华版、2015版），可以理解为\"同一套服务端程序，不同的 关卡/内容配置\"。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "031",
+  "upstreamName": "金庸群侠传（2008 加强版）",
+  "note": ""
+}

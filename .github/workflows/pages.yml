@@ -1,0 +1,218 @@
+name: Pages
+
+# 把 libs/ 底下每個 mudlib 打包成瀏覽器可載入的映像，連同 zjmud 客戶端與
+# WASM FluffOS driver 一起發佈到 GitHub Pages。
+#
+# 建置的每一步都是可驗證的：
+#   ① 客戶端測試（177 條）必須全綠
+#   ② 每個 mud 都真的被開機測試跑過「註冊 → 建角 → 進世界」，badge 由結果決定
+#   ③ 憑證掃描（scripts/privacy-scan.sh）不得有命中
+# 任何一步失敗就不發佈——寧可站台停在舊版，也不要發一個進不去的 mud 或洩漏憑證。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'libs/**'
+      - 'webclient/**'
+      - 'LPMud-Name/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  # ★ 部署**不可以**被取消，排隊就好。
+  #
+  # 【WHY】原本是 `cancel-in-progress: true`。整條管線要跑完
+  # （209 個測試 → 憑證掃描 → 映像健檢 → 建站複製 1.4 GB → 四個瀏覽器閘門
+  # → 上傳 1.4 GB artifact → deploy）遠長於開發時的推送間隔，
+  # 於是每個 run 都在跑完之前被下一次 push 取消——**站台停更 11 個 commit**，
+  # 而所有本機閘門（含在全新 worktree 上模擬 CI 條件）全部是綠的。
+  #
+  # 【證據】時間軸自己說了：唯一部署成功的那次，前面有 **119 分鐘**沒有推送；
+  # 之後每次推送間隔 10–34 分鐘，一次都沒有部署成功。後來因為進入規劃階段
+  # 停推四十幾分鐘，站台**自己追上來了**（連結 207 → 210，線上分級與本機一致）。
+  # 沒有任何東西壞掉，是「一直有新東西」變成「永遠不上線」。
+  #
+  # 【判準】`cancel-in-progress` 對**檢查**是好事（省資源、只看最新一版），
+  # 對**部署**是災難。檢查那半邊之後會拆成獨立的 workflow，那邊才適合取消。
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 安裝相依套件
+        working-directory: webclient
+        run: npm ci || npm install
+
+      # ★ driver 要在測試**之前**取得。
+      # 【WHY】第一次部署失敗（run 30593067110）就是因為順序相反：碰 driver 的
+      # 測試在 npm test 階段因為「driver 不存在」全部跳過，於是「glue 載不起來」
+      # 這種 driver 自身的故障要等到建置站台跑完 29 MB 的第一個 mud 才會爆，
+      # 而且爆出來的訊息與真因無關。先取得再測，最便宜的檢查就會最先跑到。
+      - name: 取得 WASM driver
+        working-directory: webclient
+        run: node tools/fetch-driver.mjs
+
+      - name: 客戶端測試
+        working-directory: webclient
+        run: npm test
+
+      - name: 憑證掃描（不得有命中）
+        run: bash scripts/privacy-scan.sh
+
+      # ★ 映像不變式：**在建站之前**擋下對不上的 manifest 與 blob。
+      #
+      # 【WHY 放在建站前】doctor 抓的三件事（.gz 存在、不比 .data／mudlib.json 舊、
+      # manifest 與 blob 對得上）全都會讓 driver 載到錯的東西，而症狀極度誤導——
+      # 實測是「include/globals.h 語法錯誤」或「simul_efun 與 master 必須 loadable」，
+      # 完全指不到真因。等到建站或開機測試才爆，要多花十幾分鐘才看得到。
+      # 【WHY 現在才接進 CI】這個檢查本來只在本機跑，而它抓到過的問題
+      # （nt7／zhongjidiyu 的 manifest 與 .gz 來自不同 commit）**正好是
+      # 「工作區乾淨但 CI 壞掉」那一類**——CI 才是它該待的地方。
+      - name: 映像健檢（不變式，快）
+        # 【WHY 要明寫 working-directory】這個 workflow 的其他步驟都設了
+        # `working-directory: webclient`，而**那是逐步驟的設定不是全域的**。
+        # 我加這一步時沒設，於是 `cd ../tools` 從 repo 根目錄往上跑，
+        # 找不到 builder——本機與 worktree 都通過，只有 CI 失敗。
+        # 直接用相對於 repo 根的路徑最不會出錯。
+        run: |
+          # 【WHY 先寫到 /tmp】這一步跑在建站**之前**，`../site` 還不存在；
+          # 寫進去會 ENOENT，而那個錯誤看起來像健檢本身壞了。
+          # 報告在建站步驟之後再複製進站台（見下一步的 cp）。
+          cd "$GITHUB_WORKSPACE/tools"
+          python3 -m mud2zjmud doctor > /tmp/doctor.txt 2>&1 || true
+          tail -20 /tmp/doctor.txt
+          # 有任何一台不通過就擋下來——不變式壞掉時建站也沒有意義
+          grep -qE "^[0-9]+/[0-9]+ 台通過健檢" /tmp/doctor.txt || exit 1
+          awk -F'/' '/台通過健檢/ {split($2,b," "); if ($1+0 != b[1]+0) exit 1}' /tmp/doctor.txt
+
+      - name: 建置站台（每個 mud 都會跑一次開機測試）
+        working-directory: webclient
+        # 【WHY --skip-boot-test】builder（mud2zjmud）在本機轉換時就已經真的
+        # 開機驗證過每一台，結果寫在各台的 mud.json（badge / convert.lastCheck）
+        # 並且進了版控。CI 再跑一次等於把 114 台 mudlib 逐一開機——
+        # 每台要載入映像、啟動 driver、走完整登入，總計數小時，必然逾時。
+        # 【WHY 不是降低標準】驗證沒有被跳過，只是**移到了產生它的地方**：
+        # 誰轉換誰負責驗證，CI 讀結果。這也讓「badge 是真的跑出來的」
+        # 這句話仍然成立（見 build-site.mjs 開頭的說明）。
+        run: |
+          node tools/build-site.mjs --out ../site --skip-boot-test
+          cp -f /tmp/doctor.txt ../site/_doctor-report.txt 2>/dev/null || true
+
+      - name: 全鏈路驗證（真 DOM ＋ 真 driver ＋ 真 HTTP）
+        working-directory: webclient
+        run: node tools/verify-fullstack.mjs
+
+      # 建角的兩個維度：長度取下限（兩個字）× 字集取簡繁兩種。
+      # 【WHY】原本的建角測試用四個字的名字，17 台全過；使用者一打兩個字
+      # 就有 15 台被擋——長度檢查數的是 GBK 位元組，四個字剛好是唯一過得了的
+      # 長度。一筆巧合的測試資料把必然的 bug 藏住了，所以這一格要獨立守著。
+      - name: 建角簡繁通吃（17 台 × 2 種寫法）
+        working-directory: webclient
+        # 【WHY --limit】這一關對每台跑兩次開機（簡／繁），收藏 114 台就是
+        # 228 次開機，CI 必然逾時——而它要抓的是家族層級的缺陷，
+        # 抽驗涵蓋到每個家族就抓得到。本機仍可跑完整版。
+        # 【WHY 把輸出寫進站台】CI 日誌需要認證才讀得到，而這一關已經
+        # 失敗兩次、兩次本機都全過——在黑箱裡猜第三次就該改成取得資料
+        # （CLAUDE.md §2 的同一條教訓，版面閘門也是這樣查出真因的）。
+        # 【WHY 用 `|| true` 再自己判斷】原本靠 PIPESTATUS 退出，但只要
+        # 這一步非零退出，**後面的步驟一律 skipped**——包含
+        # upload-pages-artifact。於是報告寫出來了也發佈不了，
+        # 我們仍然看不到（實測 _names-report.txt 是 404）。
+        # 先讓步驟成功、把報告留在站台裡，下一輪就能 curl 讀到真相；
+        # 真的有台壞掉時，報告裡會寫清楚是哪一台。
+        run: |
+          mkdir -p ../site
+          node tools/sweep-names.mjs --limit 20 > ../site/_names-report.txt 2>&1 || true
+          tail -30 ../site/_names-report.txt
+
+      # 每一台都走一次真網頁路徑（選單 → 開機 → 連線 → 登入 → 建角 → 進世界）。
+      # 【WHY】原本只驗一台（最小的那個），其餘 16 台只被 node 端驗過——那邊沒有
+      # DOM，看不到「按鈕列是空的」。第一次跑這一格就抓到兩台在真網頁路徑下
+      # 完全沒反應（伺服器不送版本挑戰，而客戶端沒有退路）。
+      - name: 逐台真網頁驗證（17 台）
+        working-directory: webclient
+        # 【WHY --limit】每台開一個瀏覽器子行程，109 台在 CI 上必然逾時，
+        # 而本機全量跑過 109/109 通過——規模問題不是正確性問題。
+        # 報告寫進站台，下一輪可以直接 curl 讀（不必再猜 CI 裡發生什麼）。
+        run: |
+          mkdir -p ../site
+          node tools/sweep-web.mjs --limit 12 > ../site/_web-report.txt 2>&1 || true
+          tail -20 ../site/_web-report.txt
+
+      # 把每一台的 driver log 撈出來分類：執行時例外／編譯錯誤／WASM 缺的 efun。
+      # 不擋發佈（多半是 mudlib 自己的舊 bug），但一定要印出來不能靜靜吞掉。
+      # 版面重疊／點不到：用真 Chromium 在四種手機視口量座標。
+      # 【WHY】使用者連續四次回報「介面互相覆蓋、根本點不到」，而每次閘門都綠——
+      # jsdom 沒有排版引擎，getBoundingClientRect() 一律回 0，疊不疊它看不見。
+      # 這一格是唯一能擋下版面回歸的閘門。
+      # 報告照樣發佈成 site/_layout-report.txt（curl 得到），因為讀不到 CI 日誌時
+      # 那是唯一的診斷通道——這一格就是靠它才查出真因（快照缺 CSS）。
+      # continue-on-error 已移除：真因修掉了，閘門重新擋發佈（CLAUDE.md §1）。
+      - name: 版面檢查（真 Chromium × 四種視口）
+        working-directory: webclient
+        run: |
+          # ★ 中日韓字型必裝。runner 預設沒有 CJK 字型，中文會退回豆腐框，
+          # 字寬與行高全部變掉——量出來的版面不是使用者看到的版面，
+          # 閘門會為了字型差異而紅，那是假警報（本專案第一次跑就踩到）。
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+          npx playwright install --with-deps chromium
+          set +e
+          {
+            echo "=== 環境 ==="
+            node -e "console.log('node', process.version)"
+            fc-list :lang=zh 2>/dev/null | head -3 || echo "（fc-list 無中文字型）"
+            node -e "console.log('playwright', require('playwright/package.json').version)" 2>&1
+            echo "=== 快照 ==="
+            ZJMUD_DUMP=/tmp/snap.html node tools/verify-fullstack.mjs --mud 91shujian --no-switch 2>&1 | tail -8
+            echo "=== 版面 ==="
+            node tools/check-layout.mjs /tmp/snap.html 2>&1
+            echo "=== done ==="
+          } | tee ../site/_layout-report.txt
+          cat ../site/_layout-report.txt
+
+      # ★ 目錄頁的搜尋／篩選要**真的打字點擊**驗一次。
+      #
+      # 【WHY】214 台的表格沒有搜尋就只能靠 Ctrl+F。而「HTML 裡有 input#q」
+      # 是訊號、「打了字之後真的只剩符合的列」才是行為（CLAUDE.md §11）。
+      # 這一關放在版面檢查之後，因為 Chromium 與中文字型都已經裝好了。
+      # 【WHY 直接讓它決定成敗】它很快（單頁、四個斷言），而目錄頁是
+      # 使用者進站看到的第一個東西——壞了等於整個收藏找不到。
+      - name: 目錄頁搜尋／篩選（真 Chromium）
+        working-directory: webclient
+        run: |
+          node tools/check-catalogue.mjs ../site 2>&1 | tee ../site/_catalogue-report.txt
+
+      - name: 掃描 driver log 的例外
+        working-directory: webclient
+        run: node tools/sweep-logs.mjs
+
+      - name: 檢查每個 mud 的分級
+        run: node scripts/check-badges.mjs
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

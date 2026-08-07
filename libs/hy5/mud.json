@@ -1,0 +1,49 @@
+{
+  "title": "海洋5",
+  "number": "146-1",
+  "subtitle": "\"海洋\"系列的另一支代码线（与 146/hy 同源但代码内容已大幅分叉，行数差异 很大，不能假设两者的具体修复位置/行号一致）。世界观为武侠向，社区自称 \"海洋V\"。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

@@ -1,0 +1,52 @@
+{
+  "title": "江湖风云",
+  "subtitle": "本游戏自称 **江湖风云单机**。经过与本项目内另外两个同源作品（夕阳再现· 疯狂江湖、未明空间）的核心文件比对，确认三者同出一脉，都源自\"夕阳再现 之江湖风云\"这一支中文武侠 MUD 血脉——本作在三者中与共同祖先最接近， 可以看作这一系列的核心版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "032-2",
+  "upstreamName": "江湖风云",
+  "note": ""
+}

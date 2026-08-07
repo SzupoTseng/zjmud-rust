@@ -1,0 +1,52 @@
+{
+  "title": "泥潭III测试版 / 《終極魔界》 (nitan_ceshi)",
+  "subtitle": "站点内部配置自称\"泥潭三\"(nitan.3)，但连线后看到的实际招牌是《終極 魔界》(\"Ultimate Demon Realm\")——一个套在\"泥潭\"引擎上的主题皮肤。 属于 NT/nitan/Lonely 一脉（与本项目转换的 nitan170911、nitan6、 nitan_san 同源），是这条脉络里比较早期的一个内部快照版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "041",
+  "upstreamName": "泥潭III测试版 / 《終極魔界》 (nitan_ceshi)",
+  "note": ""
+}

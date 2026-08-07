@@ -1,0 +1,52 @@
+{
+  "title": "大唐双龙 (DaTangShuangLong)",
+  "subtitle": "与 dtsl（大唐双龙传）、llmud_datangshuanglong 同属\"大唐双龙\"世界观分支， 但代码实现各自独立（共享部分基础道具内容与中文姓名校验逻辑）。取材自 黄易的武侠小说，以大唐初年天下大乱的江湖为背景。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "007-2",
+  "upstreamName": "大唐双龙 (DaTangShuangLong)",
+  "note": ""
+}

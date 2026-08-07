@@ -1,0 +1,52 @@
+{
+  "title": "炎龙封印（笑傲江湖·阿飞站）",
+  "subtitle": "属于\"夕阳再现\"（XYZX/YLFY）引擎家族，游戏内登录横幅显示为「夕阳再现」之 「笑傲江湖」，是由\"阿飞\"在\"碎梦\"修改的炎龙分支基础上再次深度改造而成的 独立版本，与同引擎家族的其它\"夕阳再现\"系游戏是关系较远的表亲，而非同一 份内容。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "033-1",
+  "upstreamName": "炎龙封印（笑傲江湖·阿飞站）",
+  "note": ""
+}

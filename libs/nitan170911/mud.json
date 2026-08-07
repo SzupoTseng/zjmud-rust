@@ -1,0 +1,52 @@
+{
+  "title": "仙剑奇侠传 (nitan170911)",
+  "subtitle": "底层标注\"NTLIB V7.1x\"，是本项目转换的\"泥潭/nitan/Lonely\"系列引擎中 体量最大的一个（约 5.4 万个文件），取材于同名经典仙侠游戏/电视剧的 世界观。与体量稍小的 nitan6（笑傲江湖）同源，共享同一套 F_DBASE 属性 存取架构。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "014",
+  "upstreamName": "仙剑奇侠传 (nitan170911)",
+  "note": ""
+}

@@ -1,0 +1,50 @@
+{
+  "title": "清华笑傲江湖 (qhxajh)",
+  "number": "019-4",
+  "subtitle": "和 019（xo，迷你版）、019-1（xo_final，最终版）同属 TMI-2/ES2/Falcon 系 引擎家族，是清华大学版本的《笑傲江湖》，门派/剧情内容与前两者不同。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-system",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/verb/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "清华笑傲江湖",
+  "note": ""
+}

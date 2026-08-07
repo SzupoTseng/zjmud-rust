@@ -1,0 +1,28 @@
+# 不要上傳到 Railway 建置脈絡的東西。
+#
+# 【WHY 第一條最重要】倉庫根目錄的 `index.html` 是**設計書的轉址頁**
+# （GitHub Pages 從根目錄發佈那一套用的），而站台真正的內容在 `site/`，
+# 是建置時才產生的。Nixpacks 的靜態站偵測看到根目錄有 index.html 就認定
+# 「這是一個靜態站」，於是 Railway 一直服務 `/designbook/`——
+# `/play.html` 回 404。把它排除掉，偵測就沒有東西可以挑錯。
+#
+# 【WHY 也排除大目錄】建置脈絡要上傳到 Railway，越小越快。
+# `LPMud-Name/`（上游伺服器，含 55 MB 的 driver.exe）與 `designbook/`
+# 對站台建置完全沒有用途。`libs/` 不能排除——那是 214 台 mudlib 的映像，
+# 站台的內容本體。
+
+# ── 會讓 builder 猜錯的東西 ────────────────────────
+index.html
+designbook/
+
+# ── 建置用不到的大目錄 ──────────────────────────────
+LPMud-Name/
+webclient/src-tauri/
+*.bat
+
+# ── 產物與暫存 ────────────────────────────────────
+site/
+node_modules/
+**/node_modules/
+libs/*/mudlib.data
+webclient/wasm/driver/

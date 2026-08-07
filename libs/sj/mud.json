@@ -1,0 +1,49 @@
+{
+  "title": "世纪 (sj)",
+  "number": "094",
+  "subtitle": "\"战国\"（Warring States）系代码库，`adm/obj/master.lpc` 一支——虽然 slug 和 `sje`/`sjecl`（书剑系列）相似，但其实是完全不同的 Century/adm-single 家族，不要混淆。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

@@ -1,0 +1,52 @@
+{
+  "title": "笑傲江湖（最终版）",
+  "subtitle": "属于 TMI-2/ES2（Falcon 系）引擎家族，是在\"笑傲江湖迷你版\"（xo）基础上 大幅扩充开发而成的完整版本，作者自称\"自玩测试站\"，内容体量是迷你版 的数倍。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-system",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/verb/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "dialect": "dmjh",
+  "number": "019-1",
+  "upstreamName": "笑傲江湖（最终版）",
+  "note": ""
+}

@@ -1,0 +1,52 @@
+{
+  "title": "西游记 (A Journey to the West)",
+  "subtitle": "登录画面自称 *A Journey to the West*，版本号 2.01，最早制作于 1996-1998 年。本项目考证认为它极可能是\"ES II / 西游记\"这一整个引擎 家族（包括 `fluffos_xiyou2000`、`mhxy`、`xiyouji2003`、`xiyouji2006`、 `xiyouji450`、`shenmo` 等在内的众多同题材姊妹游戏）**最早的祖先版本** ——文件时间戳最早，且没有任何后续站点加",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "010",
+  "upstreamName": "西游记 (A Journey to the West)",
+  "note": ""
+}

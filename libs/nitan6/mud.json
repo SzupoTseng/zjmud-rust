@@ -1,0 +1,52 @@
+{
+  "title": "笑傲江湖 (nitan6)",
+  "subtitle": "底层标注\"NT.XAJH Library 5.1g\" / \"NTOS V2.4\"，属于本项目中体量最大的 两个\"泥潭/nitan/Lonely\"系列引擎库之一（与 nitan170911 同源，后者需要 外部 MySQL 支持，本库不需要）。取材于金庸同名武侠小说的江湖世界。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "015",
+  "upstreamName": "笑傲江湖 (nitan6)",
+  "note": ""
+}

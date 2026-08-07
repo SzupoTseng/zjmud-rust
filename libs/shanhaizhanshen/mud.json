@@ -1,0 +1,48 @@
+{
+  "title": "山海战神",
+  "number": "001",
+  "subtitle": "源自 archives/山海战神.rar。本作是在史巴克 (Spock) 开发的英文科幻引擎 \"Final Frontier v0.6e\" 基础上二次改造而成的中文版本——属于 `simple`/ ES II 引擎系列（本项目转换的第一个、也是最\"标准\"的一个样板库，后续 绝大多数修复经验都是从它身上总结出来的）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 8 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

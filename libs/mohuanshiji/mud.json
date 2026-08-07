@@ -1,0 +1,52 @@
+{
+  "title": "魔幻世纪 (mohuanshiji)",
+  "subtitle": "青岛站，作者\"小宝(suannai)/西瓜太郎(gslxz)/桃心太郎\"，由\"星月传奇\" 发布。属于\"神话西游\"(SJXY) 一脉，是 ES II 引擎的一个西游记（Journey to the West）改版分支，与本项目转换的 mhxy/rzrmud 等同为\"西游记\"神话 世界观，但代码血统各自独立，并非彼此的换皮版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "058",
+  "upstreamName": "魔幻世纪 (mohuanshiji)",
+  "note": ""
+}

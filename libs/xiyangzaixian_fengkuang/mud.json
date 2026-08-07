@@ -1,0 +1,52 @@
+{
+  "title": "夕阳再现·疯狂江湖",
+  "subtitle": "站点子名\"疯狂江湖\"。属于\"夕阳再现\"这一支武侠 MUD 引擎家族——与本项目 中的 `xiyangzaixian_fengyun2`（风云再起Ⅱ）、`weimingkongjian`（未明 空间）、`jianghufengyun`（江湖风云单机）、`bixiecanyang`（碧血残阳） 等同源，各自是不同站点在同一套引擎基础上发展出的独立游戏世界。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "032",
+  "upstreamName": "夕阳再现-疯狂江湖",
+  "note": ""
+}

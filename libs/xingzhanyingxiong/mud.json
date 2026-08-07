@@ -1,0 +1,50 @@
+{
+  "title": "星战英雄",
+  "subtitle": "本游戏全名《乱世风沙之星战英雄》，属于早期国产 MudOS（xkx 系）派生的 武侠 Mud。虽然名字听起来像科幻题材，实际是一款以江湖门派、内功外功为 核心玩法的传统武侠 Mud，\"星战\"只是原作者取的一个响亮站名，与太空战争 无关。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "002",
+  "upstreamName": "星战英雄",
+  "note": ""
+}

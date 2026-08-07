@@ -1,0 +1,52 @@
+{
+  "title": "模拟华附 (moniHuafu)",
+  "subtitle": "作者\"阿飞\"/\"Jjgod\"（糊涂泥巴工作室），2000 年作品。以\"华附\"（华南 师范大学附属中学，广州知名中学）为原型，属于\"风云3\"引擎系列（与本项目 转换的 zzfy/fy2/fy2005/fengyun434 等同一底层引擎）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "039",
+  "upstreamName": "mnhf",
+  "note": ""
+}

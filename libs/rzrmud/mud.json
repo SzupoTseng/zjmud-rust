@@ -1,0 +1,52 @@
+{
+  "title": "大唐西游 YWX人造人 (rzrmud)",
+  "subtitle": "站点自称\"YWX人造人\"（原开发者的昵称/团队名），北美总站，自 2006 年 2 月 3 日运行至今（存档信息显示已有五百多个注册玩家）。与本项目转换的 \"梦幻西游\"(mhxy) 同属西游记神话世界观的一支，但引擎实现是独立的一支 （不使用 nitan/Lonely 家族那套全局属性存取机制，而是每个对象自带属性 存取方法，架构上更规范）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "016",
+  "upstreamName": "大唐西游 YWX人造人 (rzrmud)",
+  "note": ""
+}

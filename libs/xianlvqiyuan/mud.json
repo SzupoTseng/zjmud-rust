@@ -1,0 +1,52 @@
+{
+  "title": "仙侣情缘（知秋站 2001版）",
+  "subtitle": "又称 XLQY，2001年\"知秋站\"（www.mudfan.com）快照版本。属于\"仙侣情缘\" 引擎家族，与本项目另收录的\"浙大版\"分支同源但代码更早、更接近原始 版本。游戏内自称\"西游传奇之仙侣情缘\"（A Journey To The West / Fairy Love Story）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "026",
+  "upstreamName": "仙侣情缘（知秋站 2001版）",
+  "note": ""
+}

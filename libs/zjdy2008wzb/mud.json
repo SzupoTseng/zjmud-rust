@@ -1,0 +1,52 @@
+{
+  "title": "终极地狱2008完整版 (zjdy2008wzb)",
+  "number": "136",
+  "subtitle": "《终极地狱2008完整版》（REVIVE OF ULTRA HELL(BLOOD & MAGIC) FROM 1999.11.13，CDS 出品）。和本次会话已经处理过的 `hell` 档案是同一 个 Doing 血统的家族，`master.lpc`/`logind.lpc`/`named.lpc`/ `versiond.lpc` 的结构几乎逐行一致。注册流程为英文 ID → 中文姓氏 → 中文名字 → 管理密码 + 确认 → 登陆密码",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "终极地狱2008完整版",
+  "note": ""
+}

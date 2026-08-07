@@ -1,0 +1,57 @@
+# ── Rust / Tauri 建置中間檔 ────────────────────────────
+# 完整建置一次會產生約 4 GB（debug 2.5 GB + release 1.2 GB）。
+# 用 BUILD_ZJMUD.bat 重建即可；release 版 exe 約需 6 分鐘。
+webclient/src-tauri/target/
+#
+# 註：這裡不要寫 "!.../target/release/zjmud-client.exe" 想把執行檔救回來 ——
+# git 的規則是「父目錄已被排除時，不會再去看裡面的檔案」，那條例外**不會生效**
+# （可用 `git check-ignore -v <路徑>` 驗證，它會回報仍由上一行命中）。
+# 這裡也刻意不把建置產物納入版控：3.2 MB 的 Windows 執行檔會撐大歷史、
+# 換平台要重編、而且很快就與原始碼不同步。要交付執行檔請走 release 附件，
+# 或讓對方跑 BUILD_ZJMUD.bat（約 6 分鐘）。
+
+# ── Node ─────────────────────────────────────────────
+# ★ 一律在 Windows 端跑 npm install。從 WSL 裝會取得 Linux 版原生 binary
+#   （@tauri-apps/cli-linux-x64-gnu），Windows 版被覆蓋後客戶端起不來。
+node_modules/
+
+# ── 伺服器執行期產物 ──────────────────────────────────
+LPMud-Name/world/log/debug.log
+LPMud-Name/world/log/adms/
+LPMud-Name/world/data/
+#
+# 這支是跑測試時 bangzhand 自己 save_object() 出來的（mtime 2026-07-29），
+# 不是上游檔案。★ 不要改成 "*.o" 一網打盡：LPC 的 .o 是存檔而非編譯產物，
+# 上游確實有帶種子存檔（例如 world/d/quanzhou/npc/data/xingtang-tangzhu.o，
+# mtime 2022-12-16 與 LICENSE 同批），全域忽略會把它們一起弄丟。
+# 判斷準則就是 mtime：2022-12-16 21:15 = 上游，2026 = 我們自己跑出來的。
+LPMud-Name/world/cmds/bz/bangzhand.o
+
+# ── 書籍建置暫存 ─────────────────────────────────────
+designbook/_shot_*
+__pycache__/
+*.pyc
+
+# ── 一般 ─────────────────────────────────────────────
+*.bak
+*.tmp
+*.orig
+.DS_Store
+Thumbs.db
+
+# ── WASM 交付：driver 與打包產物 ───────────────────────
+# driver 由 webclient/tools/fetch-driver.mjs 從 fluffos release 取得（2.4 MB zip），
+# 打包產物由 tools/build-site.mjs 產生 —— 兩者都可重建，不進版控。
+webclient/wasm/driver/
+webclient/wasm/dist/
+webclient/wasm/work/
+site/
+libs/*/work/
+
+# mudlib 映像：版控只留 gzip 版。
+# `mudlib.data` 與 `mudlib.data.gz` 是同一份資料的兩種形式，而瀏覽器只需要
+# `.gz`（載入端優先抓它，用 DecompressionStream 串流解壓）。兩份都進版控
+# 等於把同樣的位元組存兩次——實測 97 台的 .data 是 2.8 GB 而 .gz 只有 282 MB。
+# `.data` 隨時可以從 `.gz` 還原（MudlibImage.load 會自動退回）。
+libs/*/mudlib.data
+.guard-baseline

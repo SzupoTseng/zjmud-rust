@@ -1,0 +1,52 @@
+{
+  "title": "中华英雄苏州站",
+  "subtitle": "登录横幅完整标题为《中华英雄II武侠世界》，本压缩包是其中\"苏州站\"这一 具体服务器实例，2006 年 3 月 1 日开站。核心引擎属于 ES II 引擎系列的 衍生分支（master 文件署名一路可追溯 \"Lil\" → \"Annihilator\" → \"Xiang for XKX\" → \"Doing Lu for hell\"，最后由 \"Linux@lxtx\" 改写为本作），与本项目 其它多个\"终极地狱\"/\"轩辕\"系列同属一个大家族，但",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "023",
+  "upstreamName": "中华英雄苏州站",
+  "note": ""
+}

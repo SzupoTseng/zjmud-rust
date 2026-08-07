@@ -1,0 +1,52 @@
+{
+  "title": "西游记451 (xyj451)",
+  "number": "124",
+  "subtitle": "西游记（ES II mudlib 家族，4.50 版）。注册流程**没有**\"new\"关键 字：只要输入的英文 ID 还没有存档，就会直接问\"使用 X 这个名字将会 创造一个新的人物，您确定吗(y/n)？\"。天赋点数不是选栏位调整，而是 不断重掷的循环：\"您同意这组天赋数值吗？[n|y|q]\"——`n` 重掷、`y` 接受、`q` 大概是放弃。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "note": ""
+}

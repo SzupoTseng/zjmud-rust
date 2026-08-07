@@ -1,0 +1,47 @@
+{
+  "title": "狂想空间",
+  "number": "036",
+  "subtitle": "游戏配置和进游戏后的横幅上写的都是《狂想空间》，压缩包文件名里的 \"新狂想空间II\"其实是收藏站点自己加的标题，并非游戏本名。这是一套 1995 年起源自\"ES II\"（Eastern Stories II）架构的老牌 Mud 引擎， 2002 年由台湾巫师 wade 发布，与本项目里的 es1_win、esI、xkx2001、 辽宁热线站等多个库同属 ES II 大家族。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

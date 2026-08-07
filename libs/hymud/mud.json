@@ -1,0 +1,52 @@
+{
+  "title": "海洋V·星月传奇",
+  "subtitle": "本游戏自称 **海洋V**，游戏内招牌名字为 **星月传奇**（登录后横幅显示 〖海洋V-星月传奇〗）。属于经典的 \"ES II\" 引擎家族的 **海洋II** 一支的 后续版本（与本项目中的 haiyang2/海洋II 同源，是它的独立演化版本）。 本项目迄今处理过的最大一个压缩包（工作目录内约 5.7 万个源码文件）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "043-1",
+  "upstreamName": "海洋V·星月传奇",
+  "note": ""
+}

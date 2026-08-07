@@ -1,0 +1,52 @@
+{
+  "title": "仙侣情缘（早期测试版）",
+  "subtitle": "属于 ES II 引擎家族，与同批的\"新仙侣情缘之飘渺纪元\"（xlqy_new2007） 同宗同源，是同一套代码更早、更粗糙的一个开发快照。根据这份存档自带的 说明文件，它原本就是作者用来测试驱动兼容性的\"半成品\"版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "018-1",
+  "upstreamName": "仙侣情缘（早期测试版）",
+  "note": ""
+}

@@ -1,0 +1,52 @@
+{
+  "title": "终极地狱之爱若幽兰",
+  "subtitle": "游戏登录后自报家门为\"地狱泥潭---爱若幽兰\"（压缩包标题为\"终极地狱之爱若 幽兰\"）。属于 ES II → XKX → \"地狱\"（hell）分支引擎家族，与 `zhongjidiyu_zhijian`（指间MUD版）是同一套\"地狱\"引擎核心的姊妹版本 （两者 master 文件内容完全一致），与另一个同样带\"终极地狱\"字样、但内容 完全不同的 `zhongjidiyu` 压缩包不是同一款游戏，只是名字碰巧相似。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "053",
+  "upstreamName": "终极地狱之爱若幽兰",
+  "note": ""
+}

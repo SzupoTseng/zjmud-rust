@@ -1,0 +1,50 @@
+{
+  "title": "风云Ⅳ（2005 国内经典版）— fy2005",
+  "subtitle": "配置内自报名为\"风云Ⅳ\"，站内横幅写作\"国内经典版\"。与 `fengyun434` 是 同一套\"风云Ⅳ\"引擎的不同年份/站点快照，同属本批次的**\"风云\" （Fengyun）武侠引擎家族**。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "009-1",
+  "upstreamName": "风云Ⅳ（2005 国内经典版）— fy2005",
+  "note": ""
+}

@@ -1,0 +1,52 @@
+{
+  "title": "风云III (3.0)",
+  "subtitle": "与 151/fy2mg 同为 `jinyongqunxiazhuan`/XKX 框架家族成员（登录流程、 `check_legal_name`、密码复杂度要求、民族选择等均字节级相同），但游戏 内容和标题不同，与本合集里其它\"风云\"系 lib（fy2/fys/fysjmb/jhfy2/ jhfy3/fyzfqyy/fengyun2qinghua/fengyun3dianzang/fengyun3xiuding/ jianghufengy",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "153",
+  "upstreamName": "风云III (3.0)",
+  "note": ""
+}

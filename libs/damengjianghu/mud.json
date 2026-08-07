@@ -1,0 +1,33 @@
+{
+  "title": "大梦江湖（新协议版）",
+  "subtitle": "大梦江湖(新协议版)",
+  "source": "zjmud-collection",
+  "config": "config.hell",
+  "encoding": "UTF-8（由 import-lib.mjs 轉換）",
+  "image": "mudlib.data",
+  "dialect": "dmjh",
+  "note": "",
+  "badge": "playable",
+  "convert": {
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "014",
+        "022",
+        "111",
+        "234",
+        "517",
+        "604",
+        "605"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 12 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  }
+}

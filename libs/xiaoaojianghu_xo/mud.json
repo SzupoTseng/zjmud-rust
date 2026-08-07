@@ -1,0 +1,50 @@
+{
+  "title": "笑傲江湖 XO",
+  "subtitle": "游戏取材自金庸小说《笑傲江湖》，\"XO\"是这个版本自己的代号（登录横幅上 写着\"THE SMILING PROUD WANDERER\"）。它源自\"TMI-2/ES2\"引擎，由\"Falcon\" 改写，本项目里另外两个库 `xo`（笑傲江湖迷你版）和 `xo_final`（XO 最终版 1.2）都是同一血脉的不同快照，这一份是三者中独立演化出来的第三个版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-system",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/verb/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "dialect": "dmjh",
+  "number": "019-3",
+  "upstreamName": "笑傲江湖 XO",
+  "note": ""
+}

@@ -1,0 +1,41 @@
+{
+  "title": "东方故事I屠龙战记WIN98版",
+  "subtitle": "mud2zjmud 自動轉換",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es1-body",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/ghost/_look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "noboot",
+      "reason": "fluffos_boot 回傳 -1",
+      "opcodes": [],
+      "acceptsCommands": null,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "noboot",
+  "number": "069",
+  "note": "封存缺件且無獨有內容：這份 WIN98 封存少了整個 include/（連 globals.h 都沒有），simul_efun 因此載不起來。實測 2303 個檔裡有 2290 個（99.4%）與 es1_win 同路徑，而上游查過剩下的 213 個非共同檔「幾乎全是 .old/.c~/.bak 編輯器備份，沒有獨有的遊戲內容」。補入 es1_win 的 include/（118 檔）後錯誤前進一層，露出更深的 driver 不相容（resolv_path.lpc 把 new 當識別字，FluffOS 保留字）。即使修好也只是 es1_win 的較差副本——收藏裡已經有可玩的 es1_win 與 esI，故不再投入。"
+}

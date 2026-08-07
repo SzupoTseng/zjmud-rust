@@ -1,0 +1,52 @@
+{
+  "title": "泥潭II (ntii)",
+  "number": "093",
+  "subtitle": "[nte](../nte/) 的同架构家族版本（ES2/Annihilator 系），本次修复涉 及的档案（`logind.lpc`、`named.lpc`、`versiond.lpc`、 `dns_master.lpc`、`clone/user/user.lpc`）和 nte 修复前逐字节相 同——不是整个 lib 的重复（全库 10731/14000+ 个档案不同，主要是游 戏内容），但这几个基础设施档案是共用的。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "泥潭II",
+  "note": ""
+}

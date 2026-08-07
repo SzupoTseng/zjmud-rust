@@ -1,0 +1,49 @@
+{
+  "title": "小雨西游",
+  "number": "003-1",
+  "subtitle": "游戏自身配置里写的名字是《小雨西游》，但实际登录横幅打出来的是 《小雨西游Ⅱ》（v3.0，2013 年建站），两者是同一套引擎在不同年份、不同 站点的快照，内容基本一致。它与本项目另一个已转换的库 `unknownlib20150716`（20150716未知lib）同属一个引擎家族（`chinese.c` 文件完全一致）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

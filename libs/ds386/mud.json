@@ -1,0 +1,22 @@
+{
+  "title": "Dead Souls 3.8.6",
+  "subtitle": "mud2zjmud 自動轉換",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "telnet",
+  "loginProfile": "generic-cn",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "noboot",
+  "convert": {
+    "lastCheck": {
+      "badge": "noboot",
+      "opcodes": [],
+      "reason": "English Dead Souls —— 非中文、非 zjmud 家族的獨立 mudlib。上游自己標 partial（deprioritized）。本 WASM driver 缺 socket_* efun，且該 lib 有大量型別錯誤（portal/instances/arch/wiz_hall）。依收錄紀律：上游非 playable 者不追，理由如實記錄。",
+      "acceptsCommands": null,
+      "by": "manual-analysis"
+    }
+  },
+  "number": "006",
+  "note": "English Dead Souls —— 非中文、非 zjmud 家族的獨立 mudlib。上游自己標 partial（deprioritized）。本 WASM driver 缺 socket_* efun，且該 lib 有大量型別錯誤（portal/instances/arch/wiz_hall）。依收錄紀律：上游非 playable 者不追，理由如實記錄。"
+}

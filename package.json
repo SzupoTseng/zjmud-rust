@@ -1,0 +1,13 @@
+{
+  "name": "zjmud-rust-site",
+  "private": true,
+  "type": "module",
+  "description": "Railway 用的根目錄入口：建置 site/ 並把它服務出去。倉庫轉 private 之後 GitHub Pages 不再可用。--link-libs 讓 1.4 GB 的映像留在 libs/ 由伺服器直接供應，站台產物因此只有 189 MB。",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "cd webclient && npm ci --omit=dev --no-audit --no-fund && node tools/fetch-driver.mjs && node tools/build-site.mjs --out ../site --skip-boot-test --link-libs",
+    "start": "node webclient/tools/serve-site.mjs --root site"
+  }
+}

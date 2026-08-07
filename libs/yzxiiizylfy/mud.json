@@ -1,0 +1,52 @@
+{
+  "title": "夕阳再现III之炎龙封印 (yzxiiizylfy)",
+  "number": "135",
+  "subtitle": "《夕阳再现III之炎龙封印》，阿凯工作室（AKAI Studio）2006 年出 品。和这批档案里其他\"夕阳再现\"家族一样，采用 Tomud \"2060\" 客户端 版本握手（`get_id()` 会拒绝任何不是字面字符串 \"2060\" 的第一次输 入，显示\"你的客户端非Tomud或者非笑傲江湖WWW客户端\"，然后才进入 `get_id1()` 真正询问英文 ID）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "阳再线III之炎龙封印",
+  "note": ""
+}

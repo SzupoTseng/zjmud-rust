@@ -1,0 +1,33 @@
+{
+  "title": "指尖MUD",
+  "number": "158",
+  "subtitle": "从一个嵌套压缩包中提取（`zjmud.7z` 内的 `指间mud服务器+手机版客户端.zip`， 内部文件夹名为 `hell`）——和已有的 hell/zjdywzb（Century 系）无关， master-hash 不同。和 [shujian3](../shujian3/) 是同一个手机 App 协议、 同一套自定义 `logind.lpc` 血统，但注册流程的严格程度不同（见下）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "dialect": "dmjh",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 6 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "upstreamName": "指尖MUD",
+  "note": ""
+}

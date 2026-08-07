@@ -1,0 +1,47 @@
+{
+  "title": "东方故事（蓝天） — es1_win",
+  "number": "008",
+  "subtitle": "\"东方故事\"（ES）系列 MUD 的一个早期基础版本，属于 **ES / TMI 引擎家族** ——尽管名字听起来像武侠题材，实际内容是一个西式奇幻/DND 风格的冒险 世界。与本批次的 `esI`（屠龙之战）同源，共享同一套核心引擎代码。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es1-body",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/ghost/_look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

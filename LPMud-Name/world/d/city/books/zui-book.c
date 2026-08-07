@@ -1,0 +1,30 @@
+// parry-book.c
+
+inherit ITEM;
+
+void create()
+{
+	set_name( "醉仙望月秘籍",({ "zuixian book"}));
+	set_weight(1);
+	if( clonep() )
+		set_default_object(__FILE__);
+	else {
+		set("unit", "本");
+		set("long","这是一本失传已久的高武秘籍。\n");
+		set("value", 1500);
+		set("material", "paper");
+		set("skill", ([
+			"name":	 "zuixian-wangyue",      //name of the skill
+			"exp_required": 1 ,	   //minimum combat experience required
+			"jing_cost":    100,// jing cost every time study this
+			"difficulty":	1000,	   // the base int to learn this skill
+			"min_skill":	0,	    // the minimum level you can learn
+			"max_skill":	9999	    // the maximum level you can learn
+		]) );
+	}
+}
+/*
+BY：NAME
+QQ：3468713544
+DATE：2 0 2 2 . 0 2 . 0 3
+*/

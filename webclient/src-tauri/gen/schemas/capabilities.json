@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"ZJMUD 客戶端所需的最小權限：只要能監聽後端 emit 的事件即可。TCP 連線本身走本 app 自訂的 mud_* 指令，不需要額外插件權限。","local":true,"windows":["main"],"permissions":["core:default","core:event:allow-listen","core:event:allow-unlisten","core:window:allow-close"]}}

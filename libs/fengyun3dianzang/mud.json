@@ -1,0 +1,52 @@
+{
+  "title": "风云典藏版 — fengyun3dianzang",
+  "subtitle": "**风云 3.8.0**，\"风云工作室\"内部整理的一份\"收藏版\"合集，在\"风云3.7.4\" 基础上补充了此前未发布/散佚的原创内容。属于本批次的**\"风云3\" （Fengyun III）引擎分支**，核心引擎代码与 `fengyun3xiuding`（星星 修订版）几乎完全一致，是这条分支里内容最完整的打包版本之一。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "020-2",
+  "upstreamName": "风云III典藏版",
+  "note": ""
+}

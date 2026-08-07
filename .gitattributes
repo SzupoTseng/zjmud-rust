@@ -1,0 +1,51 @@
+# ── 全域關閉行尾自動轉換 ──────────────────────────────
+#
+# 【為什麼】本倉庫是「上游 LPC 伺服器 ＋ 自寫客戶端」的混合體，裡面同時有：
+#   ① 必須維持 CRLF 的 Windows 批次檔（.bat 若被轉成 LF，label/goto 可能失效）
+#   ② 上游 mudlib 一萬多支 .c/.h，CRLF 與 LF 混用，且字串常值裡的位元組有意義
+#   ③ 沒有副檔名的二進位／半二進位資料檔：
+#        world/adm/etc/fonts/HZK32        （點陣字型，file 判為 data）
+#        world/kungfu/skill/skill         （其實是 tar 封存）
+#        world/OBJ_DUMP / PROG_DUMP       （driver 傾印，含 NEL 與 escape 序列）
+#
+# 【風險】本機 core.autocrlf=false，所以「我這邊」提交是位元組原樣。但 Git for
+# Windows 安裝時的預設是 autocrlf=true——別人 clone 下去，git 會對它自行判定為
+# 文字的檔案做 LF→CRLF。PROG_DUMP 正是那種「不含 NUL、會被誤判成文字」的檔，
+# 轉換後就默默壞掉，而且症狀出現在執行期而不是 clone 期，極難追。
+#
+# 【做法】`* -text` 讓所有檔案不論誰、不論設定，checkout 都是位元組原樣。
+* -text
+
+# 明確標記純二進位，讓 GitHub 不要嘗試產生 diff，grep 也會自動跳過
+*.exe            binary
+*.png            binary
+*.jpg            binary
+*.gif            binary
+*.ico            binary
+*.wav            binary
+*.zip            binary
+LPMud-Name/world/adm/etc/fonts/HZK*   binary
+LPMud-Name/world/kungfu/skill/skill   binary
+
+# 書籍產出物：單檔數百 KB 的 HTML，diff 沒有閱讀價值，摺疊起來
+designbook/**/*.html    linguist-generated=true
+designbook/**/*_全書.md  linguist-generated=true
+designbook/**/*_全书.md  linguist-generated=true
+
+# 語言統計：別讓上游 mudlib 的體量蓋掉本 fork 真正新增的部分
+LPMud-Name/**   linguist-vendored=true
+
+# ── libs/：整理過的 mudlib 映像 ──────────────────────
+#
+# 【為什麼是單一檔案】跨 WSL 的 9P 寫入實測只有 ~28 檔/分，一個 mudlib 一萬個小檔
+# 要五小時；打包成映像只要寫兩個檔。理由與解開方式寫在 libs/README.md。
+#
+# 【為什麼要明確標 binary】`* -text` 已經擋掉行尾轉換，但 mudlib.data 不含 NUL、
+# 內容大多是 LPC 原始碼，GitHub 與 git diff 都會把它當文字，於是任何一次改動
+# 都會嘗試產生一份幾十萬行的 diff。標成 binary 只是為了讓工具閉嘴，不影響內容。
+libs/**/mudlib.data     binary
+libs/**/mudlib.json     linguist-generated=true
+
+# 這些不是本 fork 的著作（各自的上游條款見 libs/<slug>/README.md），
+# 不要計入語言統計
+libs/**   linguist-vendored=true

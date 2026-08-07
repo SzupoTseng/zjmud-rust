@@ -1,0 +1,52 @@
+{
+  "title": "西游记2006之最终幻想 (xyj2006zzzhx)",
+  "number": "123",
+  "subtitle": "AKAI Studio 的 Tomud 品牌版西游记的另一个分支——和 122 `xyj2006n` 是同宗档案（文件结构和 bug 完全一致），连线握手方式也一样：**第一 行必须是裸的 `2060`**（Tomud/\"笑傲江湖\"客户端的自动应答），任何其 他内容都会被判定为非法客户端并断线。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "西游记2006之最终幻想",
+  "note": ""
+}

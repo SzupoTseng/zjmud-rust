@@ -1,0 +1,52 @@
+{
+  "title": "逸俠之世界 (yxzsj)",
+  "number": "134",
+  "subtitle": "《逸俠之世界》（Daniel's World），ES II 引擎家族，台湾出品。和 `libs/yxsj` 是近亲关系（同样的标题、同样的联络信箱 daniel@tpts4.seed.net.tw、同样的 bug 特征、同样的档案结构），但 不是完全相同的档案——即使去掉空白/CRLF 差异后内容仍有差别（比如 `adm/daemons/combatd.lpc` 差了大约 80 行），这份档案的 `securityd.lpc` 存档路径",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "逸  俠  之  世  界",
+  "note": ""
+}

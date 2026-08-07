@@ -1,0 +1,52 @@
+{
+  "title": "夕阳再现II-炎龙专用美化客户端 (xyzxiiylzymh)",
+  "number": "128",
+  "subtitle": "《夕阳再现III 之 炎龙封印》，AKAI Studio 出品，`xysylmhb`（夕阳三- 炎龙美化版）家族的另一个版本，一样用 Tomud 客户端握手协议（连线后 第一行是裸的 `version ` 提示，期待字面回传 `2060`）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "夕阳再现II-炎龙专用美化客户端",
+  "note": ""
+}

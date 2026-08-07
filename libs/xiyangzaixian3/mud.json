@@ -1,0 +1,52 @@
+{
+  "title": "夕阳再现III之炎龙封印",
+  "subtitle": "游戏全名《夕阳再现III之炎龙封印》，2006 年由\"阿凯工作室\"（AKAI Studio） 制作，登录后能看到的实际站点名叫\"江湖风云\"。这是国产 MudOS 老武侠 Mud 里比较有代表性的一支，风格偏经典门派、内功修炼的江湖养成玩法。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "033",
+  "upstreamName": "夕阳再现III之炎龙封印",
+  "note": ""
+}

@@ -1,0 +1,52 @@
+{
+  "title": "鹿鼎天下（游戏内实际品牌：雄霸天下『西安站』）",
+  "number": "065",
+  "subtitle": "源自 2026-07-29 批量归档 `mudlib.rar` 中的 `鹿鼎天下.rar`。\"世纪 (Century) / adm-single\" 引擎家族的一支（与 `shiji`、`shujian2008`、 `xianjianchuanqi`、`xiakexinzhuan2`、`xiakexing100` 同源），ES II 血统。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "鹿鼎天下 (in-game: 雄霸天下『西安站』)",
+  "note": ""
+}

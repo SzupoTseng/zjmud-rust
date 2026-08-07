@@ -1,0 +1,31 @@
+{
+  "title": "江湖论剑",
+  "subtitle": "LPMud-Name — 本倉庫 fork 的上游伺服器",
+  "source": "https://gitee.com/pc-feng/lpc_mud",
+  "license": "Academic Free License 3.0（見倉庫根目錄 LICENSE）",
+  "work": "../../LPMud-Name/world",
+  "config": "config.ini",
+  "dialect": "classic",
+  "encoding": "UTF-8",
+  "badge": "playable",
+  "convert": {
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "021",
+        "022",
+        "100"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "note": ""
+}

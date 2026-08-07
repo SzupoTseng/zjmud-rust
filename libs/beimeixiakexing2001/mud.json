@@ -1,0 +1,52 @@
+{
+  "title": "侠客行 (The Quest of Oriental Chivalry) — 北美 2001 版",
+  "subtitle": "属于 ES II/\"侠客行\"引擎家族（与 xkx2001、xuanjianlu 等同宗，`chinese.c`/ `master.c` 字节级相同），1996-1999 年 XiaKeXing Gaming Group 制作、于 北美地区运营的一个版本。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "017-1",
+  "upstreamName": "侠客行 (The Quest of Oriental Chivalry) — 北美 2001 版",
+  "note": ""
+}

@@ -1,0 +1,31 @@
+{
+  "name": "zjmud-webclient",
+  "version": "0.1.0",
+  "description": "ZJMUD Web 客戶端（Tauri + 純 HTML/JS，淨室重寫）",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "fake-server": "node tools/fake-server.mjs",
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "web": "node bridge/server.mjs",
+    "web:any": "node bridge/server.mjs --allow-any",
+    "wasm:driver": "node tools/fetch-driver.mjs",
+    "wasm:import": "node tools/import-all.mjs",
+    "wasm:boot-test": "node tools/boot-test.mjs",
+    "wasm:pack": "node tools/pack-lib.mjs",
+    "site": "node tools/build-site.mjs",
+    "site:serve": "node tools/serve-site.mjs"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "jsdom": "^30.0.0",
+    "playwright": "^1.62.1"
+  },
+  "dependencies": {
+    "opencc-js": "^1.4.1",
+    "ws": "^8"
+  }
+}

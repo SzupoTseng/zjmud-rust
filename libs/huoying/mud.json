@@ -1,0 +1,48 @@
+{
+  "title": "火影",
+  "number": "044",
+  "subtitle": "本游戏自称 **火影**（英文 Naruto），底层引擎注释自称 `Neolith 0.0.2`， 是 \"ES2\" 引擎家族的一员（与本项目中的武汉站、雪影奇缘等同宗）。以日本 动漫《火影忍者》为题材，玩家扮演忍者角色，登录界面带有相当精美的 ANSI 彩色 ASCII 艺术 Logo。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/usr/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 8 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

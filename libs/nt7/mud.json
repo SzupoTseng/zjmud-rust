@@ -1,0 +1,43 @@
+{
+  "title": "nt7",
+  "subtitle": "nt7-main",
+  "source": "zjmud-collection",
+  "config": "config.wasm.ini",
+  "encoding": "UTF-8（由 import-lib.mjs 轉換）",
+  "image": "mudlib.data",
+  "note": "登入成功但沒有任何面板（只收到 000 014）——畫面會是空白的",
+  "graft": {
+    "from": "/mnt/g/GameDevZ/mudlibs-main/mudlibs-main/libs/nitan170911/work",
+    "reason": "來源封存缺件（clone/user、d、cmds 等），從同一款遊戲的另一份快照補齊",
+    "rule": "只補目標映像沒有的檔；目標自己有的一律不覆蓋",
+    "files": 16136,
+    "dirs": {
+      "d": 13329,
+      "clone": 2208,
+      "cmds": 544,
+      "u": 34,
+      "kungfu": 12,
+      "adm": 5,
+      "quest": 2,
+      "help": 2
+    }
+  },
+  "protocol": "zjmud",
+  "dialect": "dmjh",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "limited",
+      "opcodes": [
+        "000",
+        "014"
+      ],
+      "reason": "登入成功但沒有任何面板（只收到 000 014）——畫面會是空白的",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "limited"
+}

@@ -1,0 +1,52 @@
+{
+  "title": "风云再起Ⅱ — fy2",
+  "subtitle": "河海大学计算机及信息工程学院开发。属于本批次的**\"风云\"（Fengyun） 武侠引擎家族**，与 `fy2005`、`fengyun434`、`fengyun2qinghua`、 `fengyun3xiuding`、`fengyun3dianzang` 同源——其中 `fengyun2qinghua` （\"清华仿写版\"）经核实其实就是本档案的另一个转发副本，源码完全一致。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "gks-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "011",
+  "upstreamName": "风云再起Ⅱ — fy2",
+  "note": ""
+}

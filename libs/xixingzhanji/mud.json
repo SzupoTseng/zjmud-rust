@@ -1,0 +1,52 @@
+{
+  "title": "西行战记",
+  "subtitle": "游戏自称《西行战记》，配置文件里写着\"总站\"，但实际登录横幅打的是 \"西行战记[宜昌站]\"——这是同一套源码在不同地区搭建的分站，内容是一样的， 只是站点名字没改而已。它属于 ES II（Eastern Stories II）架构的一个 独立分支，和本项目里其他好几个西游/ES II 系 Mud 是远房同门。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "054",
+  "upstreamName": "西行战记",
+  "note": ""
+}

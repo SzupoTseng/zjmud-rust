@@ -1,0 +1,32 @@
+{
+  "title": "洪荒世界（修复版）",
+  "number": "014-2",
+  "subtitle": "NT/泥潭（nitan）血统，与 `hhsj`（洪荒世界原版）和 `nitan170911` 共享 byte-identical 的 master 文件。新角色从「泥潭注册室」开始。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "dialect": "dmjh",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "004",
+        "005",
+        "006"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 5 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "upstreamName": "洪荒世界（修复版）",
+  "note": ""
+}

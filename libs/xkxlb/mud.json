@@ -1,0 +1,52 @@
+{
+  "title": "侠客行（老版/金庸群侠传）",
+  "number": "155",
+  "subtitle": "从一个扩展名错误的 `.rar`（实际是带有 `../` 成员路径的 POSIX tar） 提取。归档里还带着一份未被使用的 `adm/obj/master.lpc`，恰好和 jyqxc/fy2mg/xkx2017 那套框架字节相同——但实际启动用的是 `/adm/single/master`，不是这份。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "侠客行（老版/金庸群侠传）",
+  "note": ""
+}

@@ -1,0 +1,52 @@
+{
+  "title": "浴血重生",
+  "subtitle": "登录横幅自称 \"1.YXCS\"/\"浴血重生\"。血统比较特殊：既有 ES II 引擎系列的 痕迹（`chinesed.lpc` 等文件署名可追溯到 \"ES\"→\"XKX\" 一支），又混入了 \"Lonely\"（\"nitan/NT\" 系列的作者）后期改写的部分模块，属于一个 ES 系底子 上被二次深度魔改的分支，不是纯血统的任何一支。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "042",
+  "upstreamName": "浴血重生",
+  "note": ""
+}

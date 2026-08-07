@@ -1,0 +1,52 @@
+{
+  "title": "夕阳三-炎龙美化版 (xysylmhb)",
+  "number": "125",
+  "subtitle": "《夕阳再现III 之 炎龙封印》，AKAI Studio 出品。和 xyj2006 系列一样 用 Tomud/\"笑傲江湖\"客户端握手协议：**连线后第一行是裸的 `version ` 提示**，期待字面回传 `2060`。注册没有\"new\"关键字，任何还没存档 的英文 ID 直接问\"使用 X 这个名字将会创造一个新的人物，您确定吗 (y/n)？\"；天赋是菜单选栏位（`1-4` 指定单项数值，`0` 系统随机整 组，然后 `y/n` 确认",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "upstreamName": "夕阳三-炎龙美化版",
+  "note": ""
+}

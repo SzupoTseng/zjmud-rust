@@ -1,0 +1,50 @@
+{
+  "title": "侠客行一百 (xkxyb)",
+  "number": "114",
+  "subtitle": "厦门热线一百分支，MudOS V22pre11。这份档案和 110 `xkx100` 标题相 同（都叫\"侠客行一百\"），但内容是真正不同的、更小的一份快照 （6456 对 14255 个 `.lpc` 文件，目录结构也不一样，有 `ftp`/ `mudos.etc`/`www` 这些 `xkx100` 没有的目录），不是重复压缩包，所 以没有标记 `duplicate_of`。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 7 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "006",
+        "012",
+        "021"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "upstreamName": "侠客行一百",
+  "note": ""
+}

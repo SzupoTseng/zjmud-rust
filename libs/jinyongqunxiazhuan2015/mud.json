@@ -1,0 +1,52 @@
+{
+  "title": "金庸群侠传（2015版）",
+  "subtitle": "2015 年整理发布的版本，属于 ES II 引擎系列——与本项目中的\"金庸群侠传 2008加强版\"等同门作品共享同一套底层引擎/守护进程代码，七年间引擎本身 几乎没有变化，变化的主要是游戏内容，本版比 2008 版新增了不少区域和 剧情。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable",
+  "number": "031-3",
+  "upstreamName": "金庸群侠传（2015版）",
+  "note": ""
+}

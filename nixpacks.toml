@@ -1,0 +1,33 @@
+# Nixpacks 的明確設定 —— 不留給自動偵測去猜。
+#
+# 【WHY 需要這個檔】Railway 服務的一直是倉庫根目錄的設計書
+# （`/designbook/` 回 200、`/play.html` 404）。倉庫根有 `index.html`
+# （設計書的轉址頁）與 `designbook/`，Nixpacks 的**靜態站偵測**會挑到它們。
+# 我先加了 `railway.json` 與 `Dockerfile`，但若服務的 Builder 被鎖在
+# Nixpacks，Dockerfile 不會被採用，而 railway.json 的 buildCommand
+# 也可能被 UI 上的設定蓋過。`nixpacks.toml` 是 Nixpacks **自己**的設定檔，
+# 它一定會被讀到，而且明確的 phases 會壓過自動偵測。
+#
+# 【搭配 .railwayignore】那份把 `index.html` 與 `designbook/` 排除在建置
+# 脈絡之外——偵測看不到它們，就不會再挑錯。兩者一起才是完整的修法：
+# 一個說「要做什麼」，一個拿掉「會讓它想錯的東西」。
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd webclient && npm ci --omit=dev --no-audit --no-fund"]
+
+[phases.build]
+# fetch-driver 從 GitHub Releases 抓 WASM driver（不在版控裡）。
+# build-site 用 --skip-boot-test：開機驗證在轉換時就跑過了，結果寫在各台的
+# mud.json；CI 早就是這個分工（見 .github/workflows/pages.yml 的說明）。
+# 214 台逐一啟動 driver 要數小時，放在部署階段必然逾時。
+cmds = [
+  "cd webclient && node tools/fetch-driver.mjs",
+  "cd webclient && node tools/build-site.mjs --out ../site --skip-boot-test",
+]
+
+[start]
+# serve-site 監聽 $PORT 並綁 0.0.0.0（Railway 會注入 PORT）
+cmd = "node webclient/tools/serve-site.mjs --root site"

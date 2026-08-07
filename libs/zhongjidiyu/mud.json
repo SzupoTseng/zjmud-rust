@@ -1,0 +1,31 @@
+{
+  "title": "终极地狱之轩辕传说",
+  "subtitle": "MUD 内部标识为 `hell.local`，属于 ES II 引擎系列，与 `es1_win`/ `xkx2001`/`rzrmud` 等同属一支，master 文件署名一路写明 \"for ES II mudlib\" → \"Annihilator\" → \"Xiang for XKX\" → \"Doing Lu for hell\"。需要 特别说明：本项目里还有另外两个名字里也带\"终极地狱\"字样的压缩包 （`zhongjidiyu_airu",
+  "source": "zjmud-collection",
+  "config": "config.hell",
+  "encoding": "UTF-8（由 import-lib.mjs 轉換）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "number": "052",
+  "upstreamName": "终极地狱之轩辕传说",
+  "note": ""
+}

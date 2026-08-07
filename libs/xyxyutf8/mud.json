@@ -1,0 +1,49 @@
+{
+  "title": "小雨西游utf8 (xyxyutf8)",
+  "number": "126",
+  "subtitle": "《小雨西游》/《小雨西游Ⅱ》引擎的另一份独立压缩包，档案名带 \"utf8\" 暗示已经预先转成 UTF-8。和本项目已有的 003 `unknownlib20150716`（20150716未知lib）、003-1 `xiaoyuxiyou`（小雨 西游）同属一个引擎家族，但经过内容哈希比对**不是**字节级重复 （8753 对 11149 个 `.lpc` 档案，是不同时间点的快照，不只是重新编 码而已），所以独立完整处理。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "mud2zjmud",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode"
+    }
+  },
+  "dialect": "dmjh",
+  "badge": "playable"
+}

@@ -1,0 +1,52 @@
+{
+  "title": "三界传说 (San Jie Chuan Shuo)",
+  "subtitle": "以中国古典神话\"三界\"（天界/人间/地府）为背景的江湖世界。与本项目中 同样带\"三界\"招牌的 `sanjieshenhua` 只是名字相似，经逐文件比对确认并 非同一份代码（`master.lpc`/`securityd.lpc`/`logind.lpc` 均差异显著）。",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "badge": "playable",
+  "convert": {
+    "family": "hpmp-std",
+    "by": "tools/convert-to-zjmud.mjs",
+    "files": [
+      "include/zjmud.h",
+      "adm/daemons/zjmudd.lpc",
+      "cmds/std/look.lpc"
+    ],
+    "opcodes": [
+      "002",
+      "003",
+      "004",
+      "005",
+      "012"
+    ],
+    "verified": {
+      "bootTest": false,
+      "layout": false,
+      "manual": false
+    },
+    "lastCheck": {
+      "badge": "playable",
+      "reason": "註冊→建角→進世界完成，收到 9 種 opcode",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022"
+      ],
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "dialect": "dmjh",
+  "number": "059",
+  "upstreamName": "三界传说",
+  "note": ""
+}

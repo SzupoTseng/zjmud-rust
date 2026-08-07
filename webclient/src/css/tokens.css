@@ -1,0 +1,121 @@
+/* 設計 token 與三套主題。
+   換膚只需替換這一層的變數，app.css 完全不用改。
+   對應 docs/ZJMUD_CLIENT_UI_DESIGN.md §7。 */
+
+:root {
+  /* 節奏 */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+
+  /* 字體 */
+  --font-ui: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei",
+             "Noto Sans TC", "Heiti TC", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Cascadia Mono", Consolas,
+               "Noto Sans Mono CJK TC", "Courier New", monospace;
+
+  /* 使用者可調字級（main.js 寫入） */
+  --font-scale: 1;
+  --fs-base: calc(15px * var(--font-scale));
+  --fs-sm: calc(13px * var(--font-scale));
+  --fs-lg: calc(18px * var(--font-scale));
+
+  --leading: 1.7;
+
+  /* 動效 */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --dur-fast: 120ms;
+  --dur-mid: 240ms;
+}
+
+/* ══ 竹簡夜（預設）══ */
+:root,
+:root[data-theme="night"] {
+  --bg-0: #12100e;
+  --bg-1: #1a1714;
+  --bg-2: #241f1a;
+  --bg-3: #2f2822;
+
+  --line: #3a322a;
+  --line-soft: #2a241f;
+
+  --fg-0: #e8e0d4;
+  --fg-1: #a89e90;
+  --fg-2: #6e665c;
+
+  --accent: #d9a441;
+  --accent-soft: #7a5c26;
+  --accent-ink: #12100e;
+
+  --hp: #c94f4f;
+  --mp: #4f7fc9;
+  --good: #6fbf5f;
+  --warn: #d9a441;
+  --bad: #c94f4f;
+
+  --shadow: 0 8px 28px rgb(0 0 0 / .45);
+  --radius: var(--r-md);
+}
+
+/* ══ 宣紙日 ══ */
+:root[data-theme="day"] {
+  --bg-0: #efe9dd;
+  --bg-1: #f7f2e8;
+  --bg-2: #fffbf2;
+  --bg-3: #ebe3d4;
+
+  --line: #d3c8b4;
+  --line-soft: #e2d9c8;
+
+  --fg-0: #2b2620;
+  --fg-1: #5e564a;
+  --fg-2: #8b8172;
+
+  --accent: #9c6d1e;
+  --accent-soft: #d9c08a;
+  --accent-ink: #fffbf2;
+
+  --hp: #b03a3a;
+  --mp: #2f5fa8;
+  --good: #3d8b32;
+  --warn: #9c6d1e;
+  --bad: #b03a3a;
+
+  --shadow: 0 6px 20px rgb(90 70 40 / .18);
+  --radius: var(--r-md);
+}
+
+/* ══ 終端（最接近傳統 MUD 客戶端）══ */
+:root[data-theme="mud"] {
+  --bg-0: #000000;
+  --bg-1: #000000;
+  --bg-2: #0a0a0a;
+  --bg-3: #141414;
+
+  --line: #2a2a2a;
+  --line-soft: #1a1a1a;
+
+  --fg-0: #aaaaaa;
+  --fg-1: #888888;
+  --fg-2: #555555;
+
+  --accent: #00bbbb;
+  --accent-soft: #006666;
+  --accent-ink: #000000;
+
+  --hp: #aa0000;
+  --mp: #0000aa;
+  --good: #00bb00;
+  --warn: #eeee00;
+  --bad: #aa3300;
+
+  --shadow: none;
+  --radius: 0;
+
+  --font-ui: var(--font-mono);
+}

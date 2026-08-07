@@ -1,0 +1,37 @@
+{
+  "title": "武动仙途 (wdxtym)",
+  "number": "149",
+  "subtitle": "这份档案对应一次原本超时中断的转档（46890 个文件的大档案）。它用 的是一套**自定义客户端协议**，不是普通的逐行提示：服务器一连线就 送出一行版本挑战 `ver1.0,<crypt-salt>`，客户端必须回传正确加密后 的应答，或者两个内建的绕过字符串之一（测试用 `123456789abcd` 即 可），否则直接显示\"客户端非法\"并断线。之后的账号注册/角色创建也 是整行、用全角竖线 `║` 分隔多个字段一次送出（`账号║密",
+  "source": "fluffos/mudlibs（mudlibs-main）",
+  "config": "config.fluffos",
+  "protocol": "zjmud",
+  "encoding": "UTF-8（上游已轉）",
+  "image": "mudlib.data",
+  "dialect": "dmjh",
+  "convert": {
+    "family": "es2-inherit",
+    "by": "mud2zjmud",
+    "nativeLogin": true,
+    "lastCheck": {
+      "badge": "playable",
+      "opcodes": [
+        "000",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "012",
+        "021",
+        "022",
+        "100"
+      ],
+      "reason": "註冊→建角→進世界完成，收到 10 種 opcode",
+      "acceptsCommands": true,
+      "by": "build-site"
+    }
+  },
+  "badge": "playable",
+  "upstreamName": "武动仙途",
+  "note": ""
+}
