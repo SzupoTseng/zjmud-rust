@@ -28,30 +28,37 @@ if (!fs.existsSync(DOCS_DIR)) {
   console.log(`✅ 建立 ${DOCS_DIR}`);
 }
 
-// 2. 複製 site/ → docs/，排除 libs/
-async function copyDir(src, dest, ignore = []) {
+// 2. 複製 site/ → docs/，排除 libs/ 底下每個 mud 的映像（只留 index.json）
+//
+// 【WHY 不能整個排除 libs/】play.html 的 wasmboot.js 在啟動時會 fetch
+// `./libs/index.json` 來畫「選一個 mudlib」清單（見 webclient/src/js/wasmboot.js
+// 的 CATALOGUE_URL）。這份清單只是 214 筆 metadata（title/slug/badge/sizeMB），
+// 不含任何映像位元組——把它排除掉，play.html 連選單都畫不出來。
+// 真正要排除的是 `libs/<slug>/`（每台的 mudlib.data.gz，加總 1+ GB）。
+async function copyDir(src, dest, skipDirs = []) {
   if (!fs.existsSync(dest)) {
     fs.mkdirSync(dest, { recursive: true });
   }
-  
+
   const entries = fs.readdirSync(src, { withFileTypes: true });
-  
+
   for (const entry of entries) {
-    if (ignore.includes(entry.name)) continue;
-    
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
-    
+
     if (entry.isDirectory()) {
-      await copyDir(srcPath, destPath, ignore);
+      if (skipDirs.some((p) => p.test(srcPath))) continue;
+      await copyDir(srcPath, destPath, skipDirs);
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
   }
 }
 
-await copyDir(SITE_DIR, DOCS_DIR, ['libs']);
-console.log(`✅ 複製 site/ → docs/（排除 libs/）`);
+// 只跳過 `libs/<slug>/`（任何 libs 底下的子目錄），index.json 本身會被複製。
+const SKIP_LIB_SUBDIRS = [new RegExp(`\\${path.sep}libs\\${path.sep}[^\\${path.sep}]+$`)];
+await copyDir(SITE_DIR, DOCS_DIR, SKIP_LIB_SUBDIRS);
+console.log(`✅ 複製 site/ → docs/（libs/ 只留 index.json，排除各台映像）`);
 
 // 3. 生成配置說明文件
 const configDoc = `# GitHub Pages 配置說明
